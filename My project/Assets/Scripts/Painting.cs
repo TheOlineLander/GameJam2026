@@ -1,7 +1,9 @@
 using UnityEngine;
+using TMPro;
 
 public class Painting : MonoBehaviour
 {
+    [SerializeField] TMP_Text text;
     private bool isReal;
     private Sprite painting;
 
@@ -15,5 +17,7 @@ public class Painting : MonoBehaviour
         rend = GetComponent<SpriteRenderer>();
 
         rend.sprite = this.painting;
+
+        text.text = "This is AI = " + isReal;
     }
 }
