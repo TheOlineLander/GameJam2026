@@ -1,10 +1,12 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class GameHandler : MonoBehaviour
 {
     [SerializeField] private GameObject painting;
+    [SerializeField] private Transform[] spawnPoints;
 
     private int level = 0;
 
@@ -12,34 +14,45 @@ public class GameHandler : MonoBehaviour
 
     private Sprite[] real, fake;
 
-    private GameObject[] paintingsPlaced;
+    private GameObject[] paintingsPlaced = new GameObject[15];
 
-    private void Start(){DontDestroyOnLoad(gameObject);}
+    private void Start(){
+        DontDestroyOnLoad(gameObject); SetupScene(); 
+
+    }
 
     private void OnLevelWasLoaded(){SetupScene();}
 
     private void SetupScene()
     {
         level += 1;
-
         real = Resources.LoadAll<Sprite>("Real" + level);
         fake = Resources.LoadAll<Sprite>("AI" + level);
 
-        Transform[] tempSpawnPoints = levelSettings[level].spawnPositions;
-        int totalNumberOfPaintings = levelSettings[level].totalNumberOfPaintings;
-        int numberOfAIPaintings = levelSettings[level].numberOfAIPaintings;
-        int time = levelSettings[level].time;
+        levelSettings = Resources.LoadAll<Level>("ScriptableObjects");
+        print("Real Painting: " + real.Length);
+        print("Fake Painting: " + fake.Length);
+
+        Transform[] tempSpawnpoints = spawnPoints;
+        int totalNumberOfPaintings = levelSettings[level - 1].totalNumberOfPaintings;
+        int numberOfAIPaintings = levelSettings[level - 1].numberOfAIPaintings;
+        int time = levelSettings[level - 1].time;
 
         for (int i = totalNumberOfPaintings; i > 0; i--)
         {
-            bool isReal = totalNumberOfPaintings > numberOfAIPaintings;
-            int pos = Random.Range(0, tempSpawnPoints.Length - 1);
+            bool isReal = i > numberOfAIPaintings;
+            int pos = Random.Range(0, tempSpawnpoints.Length - 1);
             int pic;
             Sprite paintingToSend;
+
+            print("isreal: " + isReal);
+            print(real.Length);
+            print(fake.Length);
 
             if (isReal)
             {
                 pic = Random.Range(0, real.Length - 1);
+                
                 paintingToSend = real[pic];
             }
             else
@@ -48,13 +61,13 @@ public class GameHandler : MonoBehaviour
                 paintingToSend = fake[pic];
             }
 
-            GameObject instantiated = Instantiate(painting, tempSpawnPoints[pos]);
+            GameObject instantiated = Instantiate(painting, tempSpawnpoints[pos]);
 
-            instantiated.GetComponent<Painting>().Constructor(isReal, paintingToSend);
+            instantiated.GetComponent<Painting>().Constructor(!isReal, paintingToSend);
 
             paintingsPlaced[i] = instantiated;
 
-            tempSpawnPoints = RemoveAt(tempSpawnPoints, pos);
+            tempSpawnpoints = RemoveAt(tempSpawnpoints, pos);
 
             if (isReal)
             {
