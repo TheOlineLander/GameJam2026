@@ -8,6 +8,8 @@ public class HighScoreDisplay : MonoBehaviour
 
     [SerializeField] private int maxNumberOfHighScores = 5;
 
+    #region TestData
+
     [SerializeField] private int highScoreExampleOne = 123;
     [SerializeField] private string highScoreExampleNameOne = "Anders";
 
@@ -30,27 +32,14 @@ public class HighScoreDisplay : MonoBehaviour
     [SerializeField] private int newHighScoreExampleTwo = 1000000;
     [SerializeField] private string newHighScoreExampleNameTwo = "Bosse";
 
+    #endregion
+
     private List<HighScore> highScores = new();
     private List<GameObject> highScoreSlots = new();
 
-    public void InitializeDisplay()
-    {
-        highScores.Clear();
-        highScoreSlots.Clear();
+    
 
-        for (int i = 0; i < maxNumberOfHighScores; i++)
-        {
-            GameObject newHighScoreSlot = Instantiate(highScoreSlotPrefab, display.transform);
-            highScoreSlots.Add(newHighScoreSlot);
-            newHighScoreSlot.SetActive(false);
-        }
-    }
-
-    public List<HighScore> GetHighScores()
-    {
-        List<HighScore> highScoresCopy = new(highScores);
-        return highScoresCopy;
-    }
+    #region Testing
 
     public void TestHighScoreOne()
     {
@@ -87,6 +76,29 @@ public class HighScoreDisplay : MonoBehaviour
         CheckForNewHighScore(newHighScoreExampleNameTwo, newHighScoreExampleTwo);
     }
 
+    #endregion
+
+    #region Public Methods
+
+    public void InitializeDisplay()
+    {
+        highScores.Clear();
+        highScoreSlots.Clear();
+
+        for (int i = 0; i < maxNumberOfHighScores; i++)
+        {
+            GameObject newHighScoreSlot = Instantiate(highScoreSlotPrefab, display.transform);
+            highScoreSlots.Add(newHighScoreSlot);
+            newHighScoreSlot.SetActive(false);
+        }
+    }
+
+    public List<HighScore> GetHighScores()
+    {
+        List<HighScore> highScoresCopy = new(highScores);
+        return highScoresCopy;
+    }
+
     public void ShowHighScores()
     {
         UpdateHighScores();
@@ -119,6 +131,10 @@ public class HighScoreDisplay : MonoBehaviour
         return false;
     }
 
+    #endregion
+
+    #region Helper Methods
+
     private void AddHighScore(string name, int score)
     {
         HighScore newHighScore = new(name, score);
@@ -133,6 +149,10 @@ public class HighScoreDisplay : MonoBehaviour
 
         UpdateHighScores();
     }
+
+    
+
+    
 
     private void UpdateHighScores()
     {
@@ -155,4 +175,6 @@ public class HighScoreDisplay : MonoBehaviour
             highScoreSlots[i].SetActive(false);
         }
     }
+
+    #endregion
 }

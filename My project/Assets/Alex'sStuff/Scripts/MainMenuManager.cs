@@ -6,17 +6,25 @@ using UnityEngine.Video;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [Header("MainUIComponents")]
+    [SerializeField] private GameObject titleObject;
+    [SerializeField] private GameObject buttonsPanel;
+
+    [Header("HighScore")]
+    [SerializeField] private GameObject highScorePanel;
+
+    [Header("Difficulty")]
+    [SerializeField] private GameObject difficultyPanel;
+
+    [Header("Video")]
     [SerializeField] private GameObject videoPlayerObject;
     [SerializeField] private GameObject videoImage;
 
-    [SerializeField] private GameObject highScorePanel;
-    [SerializeField] private GameObject titleObject;
-    [SerializeField] private GameObject buttonsPanel;
-    [SerializeField] private GameObject difficultyPanel;
+    [Header("Utility")]
+    [SerializeField] private GameObject confirmationPanel;
 
     private VideoPlayer videoPlayer;
     private HighScoreDisplay highScoreDisplay;
-    
     
     private void Awake()
     {
@@ -25,7 +33,13 @@ public class MainMenuManager : MonoBehaviour
         highScoreDisplay.InitializeDisplay();
     }
 
+    #region Button Handlers
+
     public void HandlePlay() => ShowDifficulty();
+
+    public void HandleExit() => ShowConfirmationPanel();
+
+    public void HandleConfirmation() => ExitGame();
     
     public void HandleShowHighScores() => ShowHighScore();
 
@@ -35,11 +49,25 @@ public class MainMenuManager : MonoBehaviour
     
     public void HandlePlayUIVideo() => PlayVideo();
 
+    #endregion
+
+    #region Button Logic
+
     private void StartGame(int difficulty)
     {
         //Start game logic
 
         Debug.Log("Difficulty index " + difficulty + " was chosen");
+    }
+
+    private void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    private void ShowConfirmationPanel()
+    {
+        confirmationPanel.SetActive(true);
     }
 
     private void ShowHighScore()
@@ -68,8 +96,11 @@ public class MainMenuManager : MonoBehaviour
     {
         difficultyPanel.SetActive(false);
         highScorePanel.SetActive(false);
+        confirmationPanel.SetActive(false);
 
         buttonsPanel.SetActive(true);
         titleObject.SetActive(true);
     }
+
+    #endregion
 }

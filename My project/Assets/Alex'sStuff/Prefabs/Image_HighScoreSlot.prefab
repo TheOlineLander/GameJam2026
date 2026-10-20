@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c574c93096cbb4bbacd98be1f1887f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISlot
-  nameConent: {fileID: 5289722862778096815}
+  stringContent: {fileID: 5289722862778096815}
   valueContent: {fileID: 5090770659426900388}
 --- !u!1 &8321182622586247278
 GameObject:
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 414952435955791540}
   - component: {fileID: 5289722862778096815}
   m_Layer: 5
-  m_Name: Text_Name
+  m_Name: Text_String
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
