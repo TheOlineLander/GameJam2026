@@ -15557,7 +15557,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 50
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -22107,6 +22107,10 @@ MonoBehaviour:
   sprintingSound: {fileID: 8300000, guid: b1d7a4c8e607f3f46a07a832c0df49f7, type: 3}
   lookSensitivity: 0.1
   lookAngleLimit: 90
+  m_Camera: {fileID: 1531119201}
+  normalFOV: 60
+  zoomedFOV: 30
+  zoomSpeed: 5
 --- !u!143 &2015117578
 CharacterController:
   m_ObjectHideFlags: 0
@@ -22337,7 +22341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1c706625d33f0418c6e4069617d059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProximityTooltip
-  triggerDistance: 8
+  triggerDistance: 10
   interactableLayer:
     serializedVersion: 2
     m_Bits: 8
