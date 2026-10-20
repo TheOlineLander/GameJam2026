@@ -96,10 +96,12 @@ public class PlayerMovement : MonoBehaviour
         {
             footstepAudioSource.clip = activeSound;
             footstepAudioSource.Play();
+            Debug.Log("Playing footstep sound: " + activeSound.name);
         }
         else if (!footstepAudioSource.isPlaying)
         {
             footstepAudioSource.Play();
+            Debug.Log("Playing footstep sound: " + activeSound.name);
         }
     }
 
