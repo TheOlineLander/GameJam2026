@@ -5,20 +5,20 @@ using UnityEngine.InputSystem;
 public class ProximityTooltip : MonoBehaviour
 {
     [Header("Proximity Settings")]
-    public float triggerDistance = 3f; // How close the player needs to be
-    public LayerMask interactableLayer; // Optional layer mask to filter objects
+    public float triggerDistance = 3f; 
+    public LayerMask interactableLayer; 
     [SerializeField] public Camera playerCamera;
 
     private Transform playerTransform;
-    [SerializeField] private ToolTipManager toolTipManager; // Reference to the ToolTipManager
+    [SerializeField] private ToolTipManager toolTipManager; 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         playerTransform = transform;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         //CheckNearestObject();
