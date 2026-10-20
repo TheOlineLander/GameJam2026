@@ -22110,7 +22110,7 @@ MonoBehaviour:
   m_Camera: {fileID: 1531119201}
   normalFOV: 60
   zoomedFOV: 30
-  zoomSpeed: 5
+  zoomSpeed: 7
 --- !u!143 &2015117578
 CharacterController:
   m_ObjectHideFlags: 0
