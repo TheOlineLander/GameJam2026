@@ -2,19 +2,31 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEditor.ShaderGraph.Internal;
+using System.Collections;
+using UnityEngine.Assemblies;
 
 public class Painting : MonoBehaviour
 {
-    [SerializeField] TMP_Text text;
-    private bool isReal, canDestroy;
+    [SerializeField] private float dissolveSpeed, dissolveAmount;
+    [SerializeField] private TMP_Text text;
+    [SerializeField] private Material dissolve;
+    [SerializeField] private ShaderGraphVfxAsset shader;
+
+    private float currentDissolve;
+
+    private bool isReal, canDestroy, destroyed;
     private Sprite painting;
 
     private SpriteRenderer rend;
 
-    public void Constructor(bool isReal, Sprite painting)
+    private GameObject gameHandler;
+
+    public void Constructor(bool isReal, Sprite painting, GameObject gameHandler)
     {
          this.isReal = isReal;
          this.painting = painting;
+         this.gameHandler = gameHandler;
 
         rend = GetComponent<SpriteRenderer>();
 
@@ -37,7 +49,27 @@ public class Painting : MonoBehaviour
 
     private void DestroyPainting()
     {
-        print("DESTROYING");
+        gameHandler.GetComponent<GameHandler>().RemoveMe(isReal);
+        destroyed = true;
+        
+        dissolve.SetTexture("_Painting", painting.texture);
+        rend.material = dissolve;
+
+        currentDissolve = 0;
+        StartCoroutine(Burn());
+    }
+
+    private IEnumerator Burn()
+    {
+        while (currentDissolve < 1)
+        {
+
+            dissolve.SetFloat("_DissolveStrength", currentDissolve);
+            currentDissolve += dissolveAmount;
+            yield return new WaitForSeconds(dissolveSpeed);
+        }
+
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
