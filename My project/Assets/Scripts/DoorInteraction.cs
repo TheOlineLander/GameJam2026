@@ -9,8 +9,7 @@ public class DoorInteraction : MonoBehaviour
 
     [Header("Dialogue")]
     [SerializeField] private DialogueSequence dialogueSequence;
-    [SerializeField] private bool canInteractOnlyOnce = true;
-
+  
     private InputAction interactAction;
     private bool dialogueStarted;
 
@@ -36,7 +35,7 @@ public class DoorInteraction : MonoBehaviour
             return;
         }
 
-        if (canInteractOnlyOnce && dialogueStarted)
+        if (dialogueStarted)
         {
             return;
         }
@@ -50,23 +49,8 @@ public class DoorInteraction : MonoBehaviour
 
         if (playerIsCloseEnough && interactPressed)
         {
-            StartLevel1Dialogue();
+            Debug.Log("Player interacted with the door.");
         }
-    }
-
-    private void StartLevel1Dialogue()
-    {
-        if (dialogueSequence == null)
-        {
-            Debug.LogWarning(
-                "No DialogueSequence has been assigned to this door.",
-                this);
-
-            return;
-        }
-
-        dialogueStarted = true;
-        dialogueSequence.ShowAfterLevel1Dialogue();
     }
 
     private void OnDrawGizmosSelected()
