@@ -12,7 +12,7 @@ public class DoorInteraction : MonoBehaviour
     }
 
 
-
+    /*
     private void Update()
     {
         if (interactAction.IsPressed() && )
@@ -22,7 +22,7 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
-
+    */
 
 
 }
