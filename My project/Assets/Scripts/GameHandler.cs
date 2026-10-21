@@ -83,6 +83,21 @@ public class GameHandler : MonoBehaviour
         } 
     }
 
+    public int GetDestroyedAI()
+    {
+        return destroyedAI;
+    }
+
+    public int GetDestroyedReal()
+    {
+        return destroyedReal;
+    }
+
+    public int GetTotalAI()
+    {
+        return levelSettings[level - 1].numberOfAIPaintings;
+    }
+
     public void RemoveMe(bool isReal)
     {
         if (isReal)
