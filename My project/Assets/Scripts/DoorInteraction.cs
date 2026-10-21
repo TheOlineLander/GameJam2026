@@ -11,7 +11,7 @@ public class DoorInteraction : MonoBehaviour
         interactAction = InputSystem.actions.FindAction("Interact");
     }
 
-
+    /*
 
     private void Update()
     {
@@ -22,7 +22,7 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
-
+    */
 
 
 }
