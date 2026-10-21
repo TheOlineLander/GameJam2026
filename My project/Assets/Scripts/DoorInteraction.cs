@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class DoorInteraction : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class DoorInteraction : MonoBehaviour
     [SerializeField] private DialogueSequence dialogueSequence;
   
     private InputAction interactAction;
+    private bool canExit;
     private bool dialogueStarted;
 
     private void Start()
@@ -28,34 +31,31 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (player == null || interactAction == null)
+        if (other.CompareTag("Player"))
         {
-            return;
-        }
-
-        if (dialogueStarted)
-        {
-            return;
-        }
-
-        float distanceToPlayer = Vector3.Distance(
-            transform.position,
-            player.position);
-
-        bool playerIsCloseEnough = distanceToPlayer <= interactionRange;
-        bool interactPressed = interactAction.WasPressedThisFrame();
-
-        if (playerIsCloseEnough && interactPressed)
-        {
-            Debug.Log("Player interacted with the door.");
+            canExit = true;
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnTriggerExit(Collider other)
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactionRange);
+        if (other.CompareTag("Player"))
+        {
+            canExit = false;
+        }
+    }
+
+    private void Update()
+    {
+        if (canExit)
+        {
+            if (Keyboard.current.eKey.wasPressedThisFrame)
+            {
+                print("E-pressed");
+                SceneManager.LoadScene("GameMainScene");
+            }
+        }
     }
 }
