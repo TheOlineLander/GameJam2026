@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class LevelChanger : MonoBehaviour
-{
+{/*
     [SerializeField] private DialogueSequence dialogueSequence;
     private LevelCounter levelCounter;
 
@@ -27,5 +27,5 @@ public class LevelChanger : MonoBehaviour
         {
             dialogueSequence.ShowAfterLevel3Dialogue();
         }
-    }
+    }*/
 }

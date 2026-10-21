@@ -12,6 +12,7 @@ public class DialogueSequence : MonoBehaviour
     [Header("Player Control")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private bool freezePlayerDuringDialogue = true;
+    [SerializeField] private GameTimer gameTimer;
 
     [Header("Dialogue Groups")]
     [TextArea(2, 5)]
@@ -60,6 +61,8 @@ public class DialogueSequence : MonoBehaviour
 
     private void ShowDialogue(string[] messages)
     {
+        gameTimer.ResetTimer(); //TIMER MAYBE MOVE
+
         if (messages == null || messages.Length == 0)
         {
             return;
@@ -126,6 +129,11 @@ public class DialogueSequence : MonoBehaviour
         if (freezePlayerDuringDialogue)
         {
             playerMovement.enabled = canControlPlayer;
+        }
+        //timer
+        if (canControlPlayer && gameTimer != null)
+        {
+            gameTimer.StartTimer();
         }
 
         Cursor.lockState = CursorLockMode.Locked;
