@@ -1,4 +1,5 @@
 
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,6 +10,8 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private Transform[] spawnPoints;
 
     private int level = 0;
+
+    private int destroyedAI, destroyedReal;
 
     private Level[] levelSettings;
 
@@ -30,8 +33,8 @@ public class GameHandler : MonoBehaviour
         fake = Resources.LoadAll<Sprite>("AI" + level);
 
         levelSettings = Resources.LoadAll<Level>("ScriptableObjects");
-        print("Real Painting: " + real.Length);
-        print("Fake Painting: " + fake.Length);
+
+        paintingsPlaced = new GameObject[15];
 
         Transform[] tempSpawnpoints = spawnPoints;
         int totalNumberOfPaintings = levelSettings[level - 1].totalNumberOfPaintings;
@@ -44,10 +47,6 @@ public class GameHandler : MonoBehaviour
             int pos = Random.Range(0, tempSpawnpoints.Length - 1);
             int pic;
             Sprite paintingToSend;
-
-            print("isreal: " + isReal);
-            print(real.Length);
-            print(fake.Length);
 
             if (isReal)
             {
@@ -63,9 +62,11 @@ public class GameHandler : MonoBehaviour
 
             GameObject instantiated = Instantiate(painting, tempSpawnpoints[pos]);
 
-            instantiated.GetComponent<Painting>().Constructor(!isReal, paintingToSend);
+            instantiated.GetComponent<Painting>().Constructor(!isReal, paintingToSend, gameObject);
 
             paintingsPlaced[i] = instantiated;
+
+            print(instantiated);
 
             tempSpawnpoints = RemoveAt(tempSpawnpoints, pos);
 
@@ -79,6 +80,19 @@ public class GameHandler : MonoBehaviour
             }
         } 
     }
+
+    public void RemoveMe(bool isReal)
+    {
+        if (isReal)
+        {
+            destroyedReal += 1;
+        }
+        else
+        {
+            destroyedAI += 1;
+        }
+    }
+
     public static T[] RemoveAt<T>(T[] array, int position)
     {
         if (position < 0 || position >= array.Length)

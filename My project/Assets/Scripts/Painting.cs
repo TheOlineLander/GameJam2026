@@ -5,16 +5,20 @@ using UnityEngine.InputSystem;
 
 public class Painting : MonoBehaviour
 {
-    [SerializeField] TMP_Text text;
-    private bool isReal, canDestroy;
+    [SerializeField] private TMP_Text text;
+
+    private bool isReal, canDestroy, destroyed;
     private Sprite painting;
 
     private SpriteRenderer rend;
 
-    public void Constructor(bool isReal, Sprite painting)
+    private GameObject gameHandler;
+
+    public void Constructor(bool isReal, Sprite painting, GameObject gameHandler)
     {
          this.isReal = isReal;
          this.painting = painting;
+         this.gameHandler = gameHandler;
 
         rend = GetComponent<SpriteRenderer>();
 
@@ -37,6 +41,8 @@ public class Painting : MonoBehaviour
 
     private void DestroyPainting()
     {
+        gameHandler.GetComponent<GameHandler>().RemoveMe(isReal);
+        destroyed = true;
         print("DESTROYING");
     }
 
