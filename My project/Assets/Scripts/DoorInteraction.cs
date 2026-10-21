@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class DoorInteraction : MonoBehaviour
 {
@@ -9,9 +11,9 @@ public class DoorInteraction : MonoBehaviour
 
     [Header("Dialogue")]
     [SerializeField] private DialogueSequence dialogueSequence;
-    [SerializeField] private bool canInteractOnlyOnce = true;
-
+  
     private InputAction interactAction;
+    private bool canExit;
     private bool dialogueStarted;
 
     private void Start()
@@ -29,49 +31,31 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            canExit = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            canExit = false;
+        }
+    }
+
     private void Update()
     {
-        if (player == null || interactAction == null)
+        if (canExit)
         {
-            return;
+            if (Keyboard.current.eKey.wasPressedThisFrame)
+            {
+                print("E-pressed");
+                SceneManager.LoadScene("GameMainScene");
+            }
         }
-
-        if (canInteractOnlyOnce && dialogueStarted)
-        {
-            return;
-        }
-
-        float distanceToPlayer = Vector3.Distance(
-            transform.position,
-            player.position);
-
-        bool playerIsCloseEnough = distanceToPlayer <= interactionRange;
-        bool interactPressed = interactAction.WasPressedThisFrame();
-
-        if (playerIsCloseEnough && interactPressed)
-        {
-            StartLevel1Dialogue();
-        }
-    }
-
-    private void StartLevel1Dialogue()
-    {
-        if (dialogueSequence == null)
-        {
-            Debug.LogWarning(
-                "No DialogueSequence has been assigned to this door.",
-                this);
-
-            return;
-        }
-
-        dialogueStarted = true;
-        dialogueSequence.ShowAfterLevel1Dialogue();
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactionRange);
     }
 }
