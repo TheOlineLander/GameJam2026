@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -31,6 +32,11 @@ public class MainMenuManager : MonoBehaviour
         videoPlayer = videoPlayerObject.GetComponent<VideoPlayer>();
         highScoreDisplay = highScorePanel.GetComponent<HighScoreDisplay>();
         highScoreDisplay.InitializeDisplay();
+    }
+
+    public void StartGame()
+    {
+                SceneManager.LoadScene("GameMainScene");
     }
 
     #region Button Handlers
