@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 3231809151908387006}
   - component: {fileID: 1092023309937831036}
   - component: {fileID: 4789827249991818392}
+  - component: {fileID: 8486812768200607182}
   - component: {fileID: 7667974868261087154}
   m_Layer: 3
   m_Name: Painting
@@ -290,6 +291,27 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!65 &8486812768200607182
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6056021193633976699}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20, y: 20, z: 20}
+  m_Center: {x: 0.17755353, y: 0.22212437, z: -9.19}
 --- !u!65 &7667974868261087154
 BoxCollider:
   m_ObjectHideFlags: 0
