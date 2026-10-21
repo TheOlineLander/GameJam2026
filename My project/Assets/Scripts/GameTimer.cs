@@ -58,6 +58,12 @@ public class GameTimer : MonoBehaviour
         return remainingTime;
     }
 
+    // NEW: Added a method to retrieve the max time directly if needed by ScoreHandler
+    public float GetMaxTime()
+    {
+        return maxTime;
+    }
+
     private void UpdateUI()
     {
         if (timerText != null)
