@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction sprintAction;
     private InputAction zoomAction;
 
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
