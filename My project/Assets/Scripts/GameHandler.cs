@@ -40,7 +40,7 @@ public class GameHandler : MonoBehaviour
 
         for (int i = totalNumberOfPaintings; i > 0; i--)
         {
-            bool isReal = i > numberOfAIPaintings;
+            bool isReal = i !>= numberOfAIPaintings;
             int pos = Random.Range(0, tempSpawnpoints.Length - 1);
             int pic;
             Sprite paintingToSend;
