@@ -19,24 +19,23 @@ public class GameHandler : MonoBehaviour
 
     private GameObject[] paintingsPlaced = new GameObject[15];
 
-    private void Start(){
-        DontDestroyOnLoad(gameObject); SetupScene(); 
+    private LevelCounter levelCounter;
 
-    }
-
-    private void OnLevelWasLoaded(){SetupScene();}
+    private void Start(){SetupScene();}
 
     private void SetupScene()
     {
-        level += 1;
-        print("level is:" + level);
+        levelCounter = FindAnyObjectByType<LevelCounter>();
+        level = levelCounter.GetCurrantLevel();
         destroyedAI = 0; destroyedReal = 0;
 
-        //DestroyPaintings(paintingsPlaced);
-        
+        DestroyPaintings(paintingsPlaced);
 
         real = Resources.LoadAll<Sprite>("Real" + level);
         fake = Resources.LoadAll<Sprite>("AI" + level);
+
+        print("RealPics:" + real.Length);
+        print("AI:" + fake.Length);
 
         levelSettings = Resources.LoadAll<Level>("ScriptableObjects");
 
