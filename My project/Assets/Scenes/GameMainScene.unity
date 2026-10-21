@@ -22724,19 +22724,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2015117576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdf10c903a1c3ac4db980bbbe536daf5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fa01996f7be9914a9264d5e502a3036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  walkSpeed: 8
-  runningSpeed: 18
+  walkSpeed: 5.5
+  runningSpeed: 9
   walkingSound: {fileID: 8300000, guid: 4e8a9009715e36846935383d299c5cf9, type: 3}
   sprintingSound: {fileID: 8300000, guid: b1d7a4c8e607f3f46a07a832c0df49f7, type: 3}
-  lookSensitivity: 0.1
+  lookSensitivity: 0.2
   lookAngleLimit: 90
   m_Camera: {fileID: 1531119201}
   normalFOV: 60
   zoomedFOV: 30
-  zoomSpeed: 7
+  zoomSpeed: 5
 --- !u!143 &2015117578
 CharacterController:
   m_ObjectHideFlags: 0
