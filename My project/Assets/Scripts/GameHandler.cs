@@ -29,6 +29,8 @@ public class GameHandler : MonoBehaviour
     private void SetupScene()
     {
         level += 1;
+        destroyedAI = 0; destroyedReal = 0;
+
         real = Resources.LoadAll<Sprite>("Real" + level);
         fake = Resources.LoadAll<Sprite>("AI" + level);
 
