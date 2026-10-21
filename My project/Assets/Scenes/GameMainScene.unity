@@ -4624,7 +4624,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: fbdab110df1a05b458253859e37cb2b2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 0cef52e27a6e4f04d99a1f112f3a3d42, type: 2}
+      objectReference: {fileID: 2100000, guid: 4e52eb9afb146cb44a5fc7f3c9c3ce6e, type: 2}
     - target: {fileID: 919132149155446097, guid: fbdab110df1a05b458253859e37cb2b2, type: 3}
       propertyPath: m_Name
       value: Ram_Guldig (1)
@@ -23275,7 +23275,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: e83e86c54300a054ebdd638433ff9e75, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 0cef52e27a6e4f04d99a1f112f3a3d42, type: 2}
+      objectReference: {fileID: 2100000, guid: 19f0fdb988631e942a858123eef2a922, type: 2}
     - target: {fileID: 919132149155446097, guid: e83e86c54300a054ebdd638433ff9e75, type: 3}
       propertyPath: m_Name
       value: FrameTest (1)
