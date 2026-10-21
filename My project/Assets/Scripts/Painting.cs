@@ -49,7 +49,7 @@ public class Painting : MonoBehaviour
 
     private void DestroyPainting()
     {
-        gameHandler.GetComponent<GameHandler>().RemoveMe(isReal);
+        gameHandler.GetComponent<GameHandler>().RemoveMe(!isReal); //william test score fix
         destroyed = true;
         
         dissolve.SetTexture("_Painting", painting.texture);
