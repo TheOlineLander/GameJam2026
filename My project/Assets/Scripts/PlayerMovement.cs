@@ -23,27 +23,36 @@ public class PlayerMovement : MonoBehaviour
     private float lookAngle = 0.0f;
 
     //refrences
-    private Camera m_Camera;
+    [SerializeField] private Camera m_Camera;
     private CharacterController characterController;
+
+    public float normalFOV = 60f;
+    public float zoomedFOV = 30f;
+    public float zoomSpeed = 5f;
 
     //input (new system or old?)
     private InputAction moveAction;
     private InputAction sprintAction;
+    private InputAction zoomAction;
 
     private void Start()
     {
-        m_Camera = GetComponentInChildren<Camera>();
         characterController = GetComponent<CharacterController>();
         footstepAudioSource = GetComponent<AudioSource>();
 
         moveAction = InputSystem.actions.FindAction("Move");
         sprintAction = InputSystem.actions.FindAction("Sprint");
+        zoomAction = InputSystem.actions.FindAction("Zoom");
 
         //Detta har med cursor att göra... hur vill vi ha det
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         currentMoveSpeed = walkSpeed;
+        m_Camera.fieldOfView = normalFOV;
+
+        lookAngle = 0f;
+        m_Camera.transform.localRotation = Quaternion.identity;
 
         footstepAudioSource.loop = true;
         footstepAudioSource.playOnAwake = false;
@@ -58,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
         HandleMovement(moveVector);
         HandleLooking(mouseDelta);
+        HandleCameraZoom();
         HandleFootsteps(moveVector, isSprinting);
     }
 
@@ -68,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
         float oldY = moveDirection.y;
 
-        Vector2 newSpeed = new Vector2(moveVector.y * currentMoveSpeed, moveVector.y * currentMoveSpeed);
+        //Vector2 newSpeed = new Vector2(moveVector.y * currentMoveSpeed, moveVector.y * currentMoveSpeed);
 
         float forwardMovement = moveVector.y * currentMoveSpeed;
         float sidewaysMovement = moveVector.x * currentMoveSpeed;
@@ -96,10 +106,12 @@ public class PlayerMovement : MonoBehaviour
         {
             footstepAudioSource.clip = activeSound;
             footstepAudioSource.Play();
+            Debug.Log("Playing footstep sound: " + activeSound.name);
         }
         else if (!footstepAudioSource.isPlaying)
         {
             footstepAudioSource.Play();
+            Debug.Log("Playing footstep sound: " + activeSound.name);
         }
     }
 
@@ -110,5 +122,32 @@ public class PlayerMovement : MonoBehaviour
 
         m_Camera.transform.localRotation = Quaternion.Euler(lookAngle, 0, 0);
         transform.rotation *= Quaternion.Euler(0,mouseDelta.x * lookSensitivity, 0);
+    }
+
+    private void HandleCameraZoom()
+    {
+        float targetFOV = normalFOV;
+
+        bool isZooming = (zoomAction != null && zoomAction.IsPressed());
+        bool isNotZooming = (zoomAction != null && !zoomAction.IsPressed());
+
+        if (isZooming)
+        {
+            targetFOV = zoomedFOV;
+        }
+        else if (isNotZooming)
+        {
+            targetFOV = normalFOV;
+        }
+
+        m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
+    }
+
+    public void SetGameplayFOV()
+    {
+        if (m_Camera != null)
+        {
+            m_Camera.fieldOfView = normalFOV;
+        }
     }
 }
