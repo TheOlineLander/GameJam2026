@@ -231,7 +231,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d65860eafd3c4e747a625f39ba34db65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Painting
+  dissolveSpeed: 0.025
+  dissolveAmount: 0.025
   text: {fileID: 5825276264049734809}
+  dissolve: {fileID: 2100000, guid: 6acc285a34373c948a54e6fdb8704ed2, type: 2}
+  shader: {fileID: 4333940904281232215, guid: 70c22eb117175314e8b1b5b5efa2a26f, type: 3}
 --- !u!212 &4789827249991818392
 SpriteRenderer:
   serializedVersion: 2
@@ -258,7 +262,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -281,7 +285,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 1190c73cf15ca604dbe8a86e427dd8d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
