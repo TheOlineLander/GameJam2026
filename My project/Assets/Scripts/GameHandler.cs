@@ -29,7 +29,11 @@ public class GameHandler : MonoBehaviour
     private void SetupScene()
     {
         level += 1;
+        print("level is:" + level);
         destroyedAI = 0; destroyedReal = 0;
+
+        //DestroyPaintings(paintingsPlaced);
+        
 
         real = Resources.LoadAll<Sprite>("Real" + level);
         fake = Resources.LoadAll<Sprite>("AI" + level);
@@ -45,7 +49,7 @@ public class GameHandler : MonoBehaviour
 
         for (int i = totalNumberOfPaintings; i > 0; i--)
         {
-            bool isReal = i !>= numberOfAIPaintings;
+            bool isReal = i !>= numberOfAIPaintings + 1;
             int pos = Random.Range(0, tempSpawnpoints.Length - 1);
             int pic;
             Sprite paintingToSend;
@@ -98,11 +102,23 @@ public class GameHandler : MonoBehaviour
         return levelSettings[level - 1].numberOfAIPaintings;
     }
 
+
+    private void DestroyPaintings(GameObject[] paintings)
+    {
+        foreach (GameObject painting in paintings)
+        {
+            Destroy(painting);
+        }
+
+    }
+
     public void RemoveMe(bool isReal)
     {
         if (isReal)
         {
             destroyedReal += 1;
+            //WilliamAddition
+            //Object.FindObjectOfType<ScoreHandler>()?.AddError();
         }
         else
         {
