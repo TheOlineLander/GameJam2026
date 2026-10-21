@@ -51,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
         currentMoveSpeed = walkSpeed;
         m_Camera.fieldOfView = normalFOV;
 
+        lookAngle = 0f;
+        m_Camera.transform.localRotation = Quaternion.identity;
+
         footstepAudioSource.loop = true;
         footstepAudioSource.playOnAwake = false;
     }
@@ -75,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
         float oldY = moveDirection.y;
 
-        Vector2 newSpeed = new Vector2(moveVector.y * currentMoveSpeed, moveVector.y * currentMoveSpeed);
+        //Vector2 newSpeed = new Vector2(moveVector.y * currentMoveSpeed, moveVector.y * currentMoveSpeed);
 
         float forwardMovement = moveVector.y * currentMoveSpeed;
         float sidewaysMovement = moveVector.x * currentMoveSpeed;
@@ -138,5 +141,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
+    }
+
+    public void SetGameplayFOV()
+    {
+        if (m_Camera != null)
+        {
+            m_Camera.fieldOfView = normalFOV;
+        }
     }
 }
