@@ -33,7 +33,7 @@ public class DialogueSequence : MonoBehaviour
     [SerializeField] private float canvasFadeOutDuration = 1f;
 
     [Header("Scene Fade")]
-    [SerializeField] private SceneFade sceneFade;
+    private SceneFade sceneFade;
 
 
     private Coroutine dialogueCoroutine;
@@ -77,7 +77,7 @@ public class DialogueSequence : MonoBehaviour
     {
         return new string[]
         {
-            "Congratulations! You manage to find all AI generated paintings!"
+            "Congratulations!\n You manage to find all AI generated paintings!\n\n" + ShowPaycheckText()
         };
     }
 
@@ -85,20 +85,13 @@ public class DialogueSequence : MonoBehaviour
     {
         return new string[]
         {
-            "You failed to Destroy all the AI generated paintings! You are FIRED!"
+            "You failed to destroy all the AI generated paintings!\n You are FIRED!\n\n"+ ShowPaycheckText()
         };
     }
 
-    private void ShowPaycheckText()
+    private string ShowPaycheckText()
     {
-        if (PaycheckText == null || scoreHandler == null)
-        {
-            return;
-        }
-
-        PaycheckText.gameObject.SetActive(true);
-        PaycheckText.text =
-            $"You earned: {scoreHandler.GetTotalCumulativeScore():N0} SEK.";
+           return $"Your paycheck: {scoreHandler.GetTotalCumulativeScore():N0} SEK.\n Your Fines: {scoreHandler.GetTotalErrors():N0} SEK.";
     }
 
     private void ShowDialogue(string[] messages)
@@ -145,6 +138,7 @@ public class DialogueSequence : MonoBehaviour
             }
         }
         Debug.Log("Dialogue starts fading out.");
+        SetPlayerControl(true);
         yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
         /*if (levelcounter.GetCurrantLevel() < 2)
         {
@@ -158,7 +152,7 @@ public class DialogueSequence : MonoBehaviour
         }*/
 
 
-        SetPlayerControl(true);
+      
         dialogueCoroutine = null;
         gameObject.SetActive(false);
         Debug.Log("Dialogue sequence ended.");
