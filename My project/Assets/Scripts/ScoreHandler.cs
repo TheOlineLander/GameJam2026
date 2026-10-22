@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using TMPro;
 
@@ -28,6 +27,9 @@ public class ScoreHandler : MonoBehaviour
 
     private int wrongBurns = 0; // Penalty for burning a Real painting
     private int missedAIPaintings = 0; // Penalty for missing/leaving AI paintings unburned
+
+    // Cumulative score across multiple rounds/reloads
+    private static float totalCumulativeScore = 0f;
 
     public void AddError()
     {
@@ -83,24 +85,63 @@ public class ScoreHandler : MonoBehaviour
         int totalErrors = wrongBurns + missedAIPaintings;
         float finalScore = basePlusBonus * Mathf.Pow(0.75f, totalErrors);
 
+        // Accumulate into the total lifetime earnings
+        totalCumulativeScore += finalScore;
+
         if (scoreBreakdownText != null)
         {
             scoreBreakdownText.gameObject.SetActive(true);
-            scoreBreakdownText.text = $"{finalScore:N0} kr";
+            scoreBreakdownText.text = $"Total Earned: {totalCumulativeScore:N0} kr\n(+{finalScore:N0} kr this round)";
         }
 
-        Debug.Log($"Level: {currentLevel.levelName} | Time: {timeSpent:F1}s | Wrong Burns: {wrongBurns} | Missed AI: {missedAIPaintings} | FinalScore: {finalScore:F2}");
+        Debug.Log($"Level: {currentLevel.levelName} | Time: {timeSpent:F1}s | Wrong Burns: {wrongBurns} | Missed AI: {missedAIPaintings} | Round Score: {finalScore:F2} | Total Cumulative: {totalCumulativeScore:F2}");
 
         ResetErrors();
         return finalScore;
     }
 
-    // Temporary: lets you test the score without playing the whole level
+    // Helper method to automatically find the correct level index from your LevelCounter
+    private int GetCurrentLevelIndexFromCounter()
+    {
+        LevelCounter counter = FindAnyObjectByType<LevelCounter>();
+        if (counter != null)
+        {
+            // LevelCounter starts at 1 for Level 1, but array indices start at 0.
+            return Mathf.Clamp(counter.GetCurrantLevel() - 1, 0, levels.Length - 1);
+        }
+        return 0; // Fallback to first level
+    }
+
+    // Public wrapper method so DoorInteraction or LevelChanger can call it easily
+    public float SaveCurrentLevelScore()
+    {
+        int levelIndex = GetCurrentLevelIndexFromCounter();
+        return CalculateAndDisplayFinalScore(levelIndex);
+    }
+
+    // Temporary: lets you test the score without playing the whole level, using the live LevelCounter index
     [ContextMenu("Test Score")]
     private void TestScore()
     {
-        CalculateAndDisplayFinalScore(0);
+        int index = GetCurrentLevelIndexFromCounter();
+        CalculateAndDisplayFinalScore(index);
+    }
+
+    public static float GetTotalCumulativeScore()
+    {
+        return totalCumulativeScore;
+    }
+
+    // Test Function: displays the accumulated total amount gained so far
+    [ContextMenu("Test Total Score")]
+    private void TestTotalScore()
+    {
+        Debug.Log($"[ScoreHandler] Total Cumulative Earnings: {totalCumulativeScore:N2} kr");
+
+        if (scoreBreakdownText != null)
+        {
+            scoreBreakdownText.gameObject.SetActive(true);
+            scoreBreakdownText.text = $"Total Earned: {totalCumulativeScore:N0} kr";
+        }
     }
 }
-
-
