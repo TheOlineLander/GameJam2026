@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,28 +7,12 @@ public class LevelChanger : MonoBehaviour
     [SerializeField] private DialogueSequence dialogueSequence;
     private LevelCounter levelCounter;
     private GameHandler gameHandler;
+    [SerializeField] private SceneFade sceneFade;
 
     void Start()
     {
         gameHandler = FindAnyObjectByType<GameHandler>();
         levelCounter = FindAnyObjectByType<LevelCounter>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {/*
-        if (levelCounter.GetCurrantLevel() == 0)
-        {
-            dialogueSequence.ShowIntroDialogue();
-        }
-        else if (levelCounter.GetCurrantLevel() == 1)
-        {
-            dialogueSequence.ShowAfterLevel1Dialogue();
-        }
-        else if (levelCounter.GetCurrantLevel() == 2)
-        {
-            dialogueSequence.ShowAfterLevel2Dialogue();
-        }*/
     }
 
     public void OnExitDoor()
@@ -36,32 +21,40 @@ public class LevelChanger : MonoBehaviour
 
         if (gameHandler.IsLevelComplete())
         {
-            HandleSuccessfullTask();
+            StartCoroutine(HandleSuccessfullTask());
         }
         else
         {
-            HandleFailedTask();
+            StartCoroutine(HandleFailedTask());
         }
     }
 
-
-
-    private void HandleSuccessfullTask()
+    private IEnumerator HandleSuccessfullTask()
     {
-        //show message
-        //Delay for 3 seconds /press space
-        SceneManager.LoadScene("GameMainScene");
+        dialogueSequence.ShowSuccessfullMessage();
+
+        yield return new WaitUntil(
+            () => !dialogueSequence.IsDialoguePlaying);
+
         Debug.Log("Task completed successfully!");
+
+        sceneFade.LoadScene("GameMainScene");
     }
 
-    private void HandleFailedTask()
+    private IEnumerator HandleFailedTask()
     {
+        dialogueSequence.ShowFaliedTaskMessage();
+
+        yield return new WaitUntil(
+            () => !dialogueSequence.IsDialoguePlaying);
+
+        Debug.Log("Task failed!");
+
         Destroy(levelCounter.gameObject);
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        SceneManager.LoadScene("MainMenu");
-        // Handle the failed task here
-        // For example, you can show a failure message or restart the level
-        Debug.Log("Task failed!");
+
+        sceneFade.LoadScene("MainMenu");
     }
 }
