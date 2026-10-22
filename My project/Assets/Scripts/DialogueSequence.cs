@@ -18,19 +18,16 @@ public class DialogueSequence : MonoBehaviour
     [TextArea(2, 5)]
     [SerializeField] private string[] introMessages;
 
-    [TextArea(2, 5)]
-    [SerializeField] private string[] afterLevel1Messages;
 
-    [TextArea(2, 5)]
-    [SerializeField] private string[] afterLevel2Messages;
-
-    [TextArea(2, 5)]
-    [SerializeField] private string[] afterLevel3Messages;
+    [Header("Task Result Text")]
+    [SerializeField] private TextMeshProUGUI successfulTaskText;
+    [SerializeField] private TextMeshProUGUI failedTaskText;
 
     [Header("Timing")]
     [SerializeField] private float textFadeInDuration = 1f;
     [SerializeField] private float textFadeOutDuration = 1f;
     [SerializeField] private float canvasFadeOutDuration = 1f;
+
 
     private Coroutine dialogueCoroutine;
 
@@ -44,19 +41,36 @@ public class DialogueSequence : MonoBehaviour
         ShowDialogue(introMessages);
     }
 
-    public void ShowAfterLevel1Dialogue()
+    public void ShowSuccessfullMessage()
     {
-        ShowDialogue(afterLevel1Messages);
+        ShowDialogue(GetSuccessfulTaskMessages());
     }
 
-    public void ShowAfterLevel2Dialogue()
+    public void ShowFaliedTaskMessage()
     {
-        ShowDialogue(afterLevel2Messages);
+        ShowDialogue(GetFailedTaskMessages());
     }
 
-    public void ShowAfterLevel3Dialogue()
+    private string [] GetSuccessfulTaskMessages()
     {
-        ShowDialogue(afterLevel3Messages);
+        //hur texten ska se ut
+        return new string[]
+        {
+            "Congratulations! You have successfully completed the task.",
+            "Your efforts have paid off, and you can now move on to the next challenge.",
+            "Keep up the great work!"
+        };
+    }
+
+    private string [] GetFailedTaskMessages()
+    {
+        //hur texten ska se ut
+        return new string[]
+        {
+            "Unfortunately, you have failed the task.",
+            "Don't be discouraged! You can try again and improve your skills.",
+            "Remember, failure is just a stepping stone to success."
+        };
     }
 
     private void ShowDialogue(string[] messages)
