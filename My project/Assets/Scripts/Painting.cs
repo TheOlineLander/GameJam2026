@@ -73,12 +73,11 @@ public class Painting : MonoBehaviour
 
         while (currentDissolve < 1)
         {
-
             dissolve.SetFloat("_DissolveStrength", currentDissolve);
             currentDissolve += dissolveAmount;
             yield return new WaitForSeconds(dissolveSpeed);
         }
-
+        yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }
 
