@@ -14,6 +14,8 @@ public class Painting : MonoBehaviour
     [SerializeField] private ShaderGraphVfxAsset shader;
     [SerializeField] private AudioSource audioSource; //HANNA
 
+    [SerializeField] private GameObject burnEffect;
+
     private float currentDissolve;
 
     private bool isReal, canDestroy, destroyed;
@@ -66,6 +68,8 @@ public class Painting : MonoBehaviour
         dissolve.SetTexture("_Painting", painting.texture);
         rend.material = dissolve;
         currentDissolve = 0;
+
+        burnEffect.SetActive(true);
 
         while (currentDissolve < 1)
         {
