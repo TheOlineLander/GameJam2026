@@ -85,8 +85,10 @@ public class ScoreHandler : MonoBehaviour
 
         // Total penalty count combines wrong burns + missed AI paintings
         int totalErrors = wrongBurns + missedAIPaintings;
+        float scoreBeforePenalty = basePlusBonus;
         float finalScore = basePlusBonus * Mathf.Pow(0.75f, totalErrors);
 
+        fines = Mathf.Max(0,Mathf.RoundToInt(scoreBeforePenalty - finalScore));
         // Accumulate into the total lifetime earnings
         totalCumulativeScore += finalScore;
 
@@ -134,9 +136,9 @@ public class ScoreHandler : MonoBehaviour
         return totalCumulativeScore;
     }
 
-    public float GetTotalErrors()
-    { 
-        return totalCumulativeScore * 0.25f;
+    public float GetFines()
+    {
+        return fines;
     }
 
     // Test Function: displays the accumulated total amount gained so far

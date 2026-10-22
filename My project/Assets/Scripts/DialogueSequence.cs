@@ -91,7 +91,13 @@ public class DialogueSequence : MonoBehaviour
 
     private string ShowPaycheckText()
     {
-           return $"Your paycheck: {scoreHandler.GetTotalCumulativeScore():N0} SEK.\n Your Fines: {scoreHandler.GetTotalErrors():N0} SEK.";
+        string paycheck =
+        $"<color=green>Your paycheck: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>";
+
+        string fines =
+            $"<color=red>Your fines: {scoreHandler.GetFines():N0} SEK.</color>";
+
+        return paycheck + "\n" + fines;
     }
 
     private void ShowDialogue(string[] messages)
