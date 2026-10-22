@@ -10,7 +10,7 @@ public class DialogueSequence : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     private LevelCounter levelcounter;
     private ScoreHandler scoreHandler;
-    [SerializeField] private TextMeshProUGUI PaycheckText;
+    [SerializeField] private    TextMeshProUGUI PaycheckText;
 
 
     [Header("Player Control")]
@@ -63,37 +63,42 @@ public class DialogueSequence : MonoBehaviour
 
     public void ShowSuccessfullMessage()
     {
+        ShowPaycheckText();
         ShowDialogue(GetSuccessfulTaskMessages());
     }
 
     public void ShowFaliedTaskMessage()
     {
+        ShowPaycheckText();
         ShowDialogue(GetFailedTaskMessages());
     }
 
     private string [] GetSuccessfulTaskMessages()
     {
-        //hur texten ska se ut
         return new string[]
         {
-           "Success! You completed the task. Press Space or Right Mouse Button to continue."
-           + ShowPayCheckText()
+            "Congratulations! You manage to find all AI generated paintings!"
         };
     }
 
     private string [] GetFailedTaskMessages()
     {
-        //hur texten ska se ut
         return new string[]
         {
-            "Failure! You did not complete the task. Press Space or Right Mouse Button to continue."
-            + ShowPayCheckText()
+            "You failed to Destroy all the AI generated paintings! You are FIRED!"
         };
     }
 
-    private string ShowPayCheckText()
+    private void ShowPaycheckText()
     {
-        return $"You earned:" +scoreHandler.GetTotalCumulativeScore() +" SEK.";
+        if (PaycheckText == null || scoreHandler == null)
+        {
+            return;
+        }
+
+        PaycheckText.gameObject.SetActive(true);
+        PaycheckText.text =
+            $"You earned: {scoreHandler.GetTotalCumulativeScore():N0} SEK.";
     }
 
     private void ShowDialogue(string[] messages)
