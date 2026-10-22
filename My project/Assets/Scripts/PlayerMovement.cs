@@ -35,11 +35,14 @@ public class PlayerMovement : MonoBehaviour
     private InputAction sprintAction;
     private InputAction zoomAction;
 
+    private Animator zippo;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
         footstepAudioSource = GetComponent<AudioSource>();
+
+        zippo = GameObject.FindGameObjectWithTag("Zip").GetComponent<Animator>();
 
         moveAction = InputSystem.actions.FindAction("Move");
         sprintAction = InputSystem.actions.FindAction("Sprint");
@@ -70,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
         HandleLooking(mouseDelta);
         HandleCameraZoom();
         HandleFootsteps(moveVector, isSprinting);
+        zippo.speed = currentMoveSpeed * 0.25f;
     }
 
     private void HandleMovement(Vector2 moveVector)

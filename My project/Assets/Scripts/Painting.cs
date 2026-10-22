@@ -21,7 +21,7 @@ public class Painting : MonoBehaviour
 
     private SpriteRenderer rend;
 
-    private GameObject gameHandler;
+    private GameObject gameHandler, zippo;
 
     public void Constructor(bool isReal, Sprite painting, GameObject gameHandler)
     {
@@ -51,18 +51,22 @@ public class Painting : MonoBehaviour
 
     private void DestroyPainting()
     {
-        gameHandler.GetComponent<GameHandler>().RemoveMe(!isReal);
         destroyed = true;
-        
-        dissolve.SetTexture("_Painting", painting.texture);
-        rend.material = dissolve;
+        zippo = GameObject.FindGameObjectWithTag("Zip");
+        zippo.GetComponent<Animator>().SetTrigger("Light");
 
-        currentDissolve = 0;
         StartCoroutine(Burn());
     }
 
     private IEnumerator Burn()
     {
+        gameHandler.GetComponent<GameHandler>().RemoveMe(!isReal);
+        yield return new WaitForSeconds(0.1f);
+
+        dissolve.SetTexture("_Painting", painting.texture);
+        rend.material = dissolve;
+        currentDissolve = 0;
+
         while (currentDissolve < 1)
         {
 
