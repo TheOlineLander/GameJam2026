@@ -8,6 +8,7 @@ public class DialogueSequence : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI dialogueText;
+    private LevelCounter levelcounter;
 
     [Header("Player Control")]
     [SerializeField] private PlayerMovement playerMovement;
@@ -18,45 +19,65 @@ public class DialogueSequence : MonoBehaviour
     [TextArea(2, 5)]
     [SerializeField] private string[] introMessages;
 
-    [TextArea(2, 5)]
-    [SerializeField] private string[] afterLevel1Messages;
 
-    [TextArea(2, 5)]
-    [SerializeField] private string[] afterLevel2Messages;
-
-    [TextArea(2, 5)]
-    [SerializeField] private string[] afterLevel3Messages;
+    [Header("Task Result Text")]
+    [SerializeField] private TextMeshProUGUI successfulTaskText;
+    [SerializeField] private TextMeshProUGUI failedTaskText;
 
     [Header("Timing")]
     [SerializeField] private float textFadeInDuration = 1f;
     [SerializeField] private float textFadeOutDuration = 1f;
     [SerializeField] private float canvasFadeOutDuration = 1f;
 
+
     private Coroutine dialogueCoroutine;
 
     private void Start()
     {
-        ShowDialogue(introMessages);
+        levelcounter = FindAnyObjectByType<LevelCounter>();
+        if (levelcounter.GetCurrantLevel()<2)
+        {
+            ShowDialogue(introMessages);
+        }
+        else { 
+            canvasGroup.alpha = 0f;
+            gameTimer.StartTimer();
+        }
+        
     }
 
     public void ShowIntroDialogue()
     {
         ShowDialogue(introMessages);
+        Debug.Log("Intro dialogue shown.");
     }
 
-    public void ShowAfterLevel1Dialogue()
+    public void ShowSuccessfullMessage()
     {
-        ShowDialogue(afterLevel1Messages);
+        ShowDialogue(GetSuccessfulTaskMessages());
     }
 
-    public void ShowAfterLevel2Dialogue()
+    public void ShowFaliedTaskMessage()
     {
-        ShowDialogue(afterLevel2Messages);
+        ShowDialogue(GetFailedTaskMessages());
     }
 
-    public void ShowAfterLevel3Dialogue()
+    private string [] GetSuccessfulTaskMessages()
     {
-        ShowDialogue(afterLevel3Messages);
+        //hur texten ska se ut
+        return new string[]
+        {
+           "Success! You completed the task. Press Space or Right Mouse Button to continue."
+        };
+    }
+
+    private string [] GetFailedTaskMessages()
+    {
+        //hur texten ska se ut
+        return new string[]
+        {
+            "Failure! You did not complete the task. Press Space or Right Mouse Button to continue."
+        };
     }
 
     private void ShowDialogue(string[] messages)
@@ -85,6 +106,7 @@ public class DialogueSequence : MonoBehaviour
 
     private IEnumerator PlayDialogueSequence(string[] messages)
     {
+        Debug.Log("Dialogue sequence started.");
         for (int i = 0; i < messages.Length; i++)
         {
             dialogueText.text = messages[i];
@@ -101,12 +123,14 @@ public class DialogueSequence : MonoBehaviour
                 yield return StartCoroutine(FadeText(1f, 0f, textFadeOutDuration));
             }
         }
-
-        yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
+        Debug.Log("Dialogue starts fading out.");
+            yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
+       
 
         SetPlayerControl(true);
         dialogueCoroutine = null;
         gameObject.SetActive(false);
+        Debug.Log("Dialogue sequence ended.");
     }
 
     private bool IsNextInputPressed()
@@ -138,6 +162,8 @@ public class DialogueSequence : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        Debug.Log("Player can move");
     }
 
     private IEnumerator FadeText(float startAlpha, float targetAlpha, float duration)
@@ -173,4 +199,6 @@ public class DialogueSequence : MonoBehaviour
 
         canvasGroup.alpha = targetAlpha;
     }
+
+    public bool IsDialoguePlaying => dialogueCoroutine != null;
 }
