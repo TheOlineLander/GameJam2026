@@ -7,6 +7,7 @@ TagManager:
   - Painting
   - Door
   - Plate
+  - Zip
   layers:
   - Default
   - TransparentFX
