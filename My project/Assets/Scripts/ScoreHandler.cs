@@ -74,6 +74,12 @@ public class ScoreHandler : MonoBehaviour
             missedAIPaintings = unburnedAI; // assign, don't add
         }
 
+        int wrongRealPaintings = handler != null
+    ? handler.GetDestroyedReal()
+    : wrongBurns;
+
+        int totalErrors = wrongRealPaintings + missedAIPaintings;
+
         // 2. Handle Timer
         float timeSpent = gameTimer != null ? gameTimer.GetElapsedTime() : 0f;
         if (gameTimer != null) gameTimer.StopTimer();
@@ -84,11 +90,15 @@ public class ScoreHandler : MonoBehaviour
         float basePlusBonus = currentLevel.flatSum + timeBonus;
 
         // Total penalty count combines wrong burns + missed AI paintings
-        int totalErrors = wrongBurns + missedAIPaintings;
-        float scoreBeforePenalty = basePlusBonus;
-        float finalScore = basePlusBonus * Mathf.Pow(0.75f, totalErrors);
+        //int totalErrors = wrongBurns + missedAIPaintings;
+        float scoreBeforePenalties = basePlusBonus;
+        float finalScore = scoreBeforePenalties * Mathf.Pow(0.75f, totalErrors);
 
-        fines = Mathf.Max(0,Mathf.RoundToInt(scoreBeforePenalty - finalScore));
+
+        fines = Mathf.Max(
+            0,
+            Mathf.RoundToInt(scoreBeforePenalties - finalScore)
+        );
         // Accumulate into the total lifetime earnings
         totalCumulativeScore += finalScore;
 
@@ -139,6 +149,11 @@ public class ScoreHandler : MonoBehaviour
     public float GetFines()
     {
         return fines;
+    }
+
+    public int GetTotalErrors()
+    {
+        return wrongBurns + missedAIPaintings;
     }
 
     // Test Function: displays the accumulated total amount gained so far
