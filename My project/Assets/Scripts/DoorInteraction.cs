@@ -15,9 +15,11 @@ public class DoorInteraction : MonoBehaviour
     private InputAction interactAction;
     private bool canExit;
     private bool dialogueStarted;
+    private LevelChanger levelChanger;
 
     private void Start()
     {
+        levelChanger = FindAnyObjectByType<LevelChanger>();
         interactAction = InputSystem.actions.FindAction("Interact");
 
         if (player == null)
@@ -54,7 +56,7 @@ public class DoorInteraction : MonoBehaviour
             if (Keyboard.current.eKey.wasPressedThisFrame)
             {
                 print("E-pressed");
-                SceneManager.LoadScene("GameMainScene");
+                levelChanger.OnExitDoor();
             }
         }
     }

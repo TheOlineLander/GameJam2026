@@ -7,7 +7,7 @@ public class Level : ScriptableObject
     [Tooltip("Number of paintings")]
     public int totalNumberOfPaintings;
 
-    [Range(1, 12)]
+    [Range(0, 12)]
     [Tooltip("Number of AI paintings")]
     public int numberOfAIPaintings;
 

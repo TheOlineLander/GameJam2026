@@ -15,8 +15,11 @@ public class GameTimer : MonoBehaviour
     public event System.Action OnTimeUp;
     public float MaxTime => maxTime;
 
+    private LevelChanger levelChanger;
+
     void Start()
     {
+        levelChanger = FindAnyObjectByType<LevelChanger>();
         StopTimer();
     }
 
@@ -31,6 +34,7 @@ public class GameTimer : MonoBehaviour
             remainingTime = 0f;
             StopTimer();
             OnTimeUp?.Invoke();
+            levelChanger.OnExitDoor();
         }
 
         UpdateUI();

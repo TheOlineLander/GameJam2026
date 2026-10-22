@@ -101,6 +101,12 @@ public class GameHandler : MonoBehaviour
         return levelSettings[level - 1].numberOfAIPaintings;
     }
 
+    public bool IsLevelComplete()
+    {
+        Debug.Log("dESTROYED" + destroyedAI + " / " + levelSettings[level - 1].numberOfAIPaintings);
+        return destroyedAI == levelSettings[level - 1].numberOfAIPaintings;
+    }
+
 
     private void DestroyPaintings(GameObject[] paintings)
     {
