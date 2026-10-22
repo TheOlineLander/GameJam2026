@@ -16,11 +16,13 @@ public class DoorInteraction : MonoBehaviour
     private bool canExit;
     private bool dialogueStarted;
     private LevelChanger levelChanger;
+    private ScoreHandler scoreHandler;
 
     private void Start()
     {
         levelChanger = FindAnyObjectByType<LevelChanger>();
         interactAction = InputSystem.actions.FindAction("Interact");
+        scoreHandler = FindAnyObjectByType<ScoreHandler>();
 
         if (player == null)
         {
@@ -56,6 +58,7 @@ public class DoorInteraction : MonoBehaviour
             if (Keyboard.current.eKey.wasPressedThisFrame)
             {
                 print("E-pressed");
+                scoreHandler?.SaveCurrentLevelScore(); //William
                 levelChanger.OnExitDoor();
             }
         }
