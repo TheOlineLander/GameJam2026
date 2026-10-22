@@ -48,12 +48,17 @@ public class DialogueSequence : MonoBehaviour
         {
             ShowDialogue(introMessages);
         }
-        else { 
+        else if (levelcounter.GetCurrantLevel() <5){ 
+
             canvasGroup.alpha = 0f;
             gameTimer.StartTimer();
+        } else if (levelcounter.GetCurrantLevel() == 5)
+        {
+            ShowDialogue(new string[] { ShowLastText() });
+
         }
-        
     }
+
 
     public void ShowIntroDialogue()
     {
@@ -77,7 +82,7 @@ public class DialogueSequence : MonoBehaviour
     {
         return new string[]
         {
-            "Congratulations!\n You manage to find all AI generated paintings!\n\n" + ShowPaycheckText()
+            "Congratulations!\n You managed to find all AI generated paintings!\n\n" + ShowPaycheckText()
         };
     }
 
@@ -85,20 +90,29 @@ public class DialogueSequence : MonoBehaviour
     {
         return new string[]
         {
-            "You failed to destroy all the AI generated paintings!\n You are FIRED!\n\n"+ ShowPaycheckText()
+            "You failed to destroy all the AI generated paintings!\n YOU ARE FIRED!!!\n\n"+ ShowPaycheckText()
         };
     }
 
     private string ShowPaycheckText()
     {
         string paycheck =
-        $"<color=green>Your paycheck: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>";
+        $"<color=green>Your expected paycheck: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>";
 
         string fines =
             $"<color=red>Your fines: {scoreHandler.GetFines():N0} SEK.</color>";
 
         return paycheck + "\n" + fines;
     }
+
+    private string ShowLastText()
+    {
+        string lastText = $"The week is over and your total earnings are:\n" +
+            $"<color=green>Your total earned: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>" +
+            $"\n<color=red>Your total fines: {scoreHandler.GetFines():N0} SEK.</color>";
+        return lastText;
+    }
+
 
     private void ShowDialogue(string[] messages)
     {

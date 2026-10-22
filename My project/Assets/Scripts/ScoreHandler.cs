@@ -28,7 +28,21 @@ public class ScoreHandler : MonoBehaviour
     private int wrongBurns = 0; // Penalty for burning a Real painting
     private int missedAIPaintings = 0; // Penalty for missing/leaving AI paintings unburned
     private int fines = 0; // Penalty for fines (if applicable)
-   
+
+    /*
+    private int level1Score= 0;
+    private int level2Score= 0;
+    private int level3Score= 0;
+    private int level4Score= 0;
+    private int level5Score= 0;
+
+    private int level1Fines= 0;
+    private int level2Fines= 0;
+    private int level3Fines= 0;
+    private int level4Fines= 0;
+    private int level5Fines= 0;
+
+    */
 
     // Cumulative score across multiple rounds/reloads
     private static float totalCumulativeScore = 0f;
@@ -155,6 +169,17 @@ public class ScoreHandler : MonoBehaviour
     {
         return wrongBurns + missedAIPaintings;
     }
+
+ /*   public int FinesPerLevel()
+    {
+        int Level1Score = (int)SaveCurrentLevelScore();
+        return 0;
+    }
+
+    public int MoneyPerLevel()
+    {
+        return 0;
+    }*/
 
     // Test Function: displays the accumulated total amount gained so far
     [ContextMenu("Test Total Score")]
