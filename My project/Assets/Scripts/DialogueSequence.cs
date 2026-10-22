@@ -124,7 +124,8 @@ public class DialogueSequence : MonoBehaviour
             }
         }
         Debug.Log("Dialogue starts fading out.");
-        yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
+            yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
+       
 
         SetPlayerControl(true);
         dialogueCoroutine = null;

@@ -7,6 +7,7 @@ public class LevelChanger : MonoBehaviour
     [SerializeField] private DialogueSequence dialogueSequence;
     private LevelCounter levelCounter;
     private GameHandler gameHandler;
+    [SerializeField] private SceneFade sceneFade;
 
     void Start()
     {
@@ -37,7 +38,7 @@ public class LevelChanger : MonoBehaviour
 
         Debug.Log("Task completed successfully!");
 
-        SceneManager.LoadScene("GameMainScene");
+        sceneFade.LoadScene("GameMainScene");
     }
 
     private IEnumerator HandleFailedTask()
@@ -54,6 +55,6 @@ public class LevelChanger : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        SceneManager.LoadScene("MainMenu");
+        sceneFade.LoadScene("MainMenu");
     }
 }
