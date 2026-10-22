@@ -12,7 +12,6 @@ public class Painting : MonoBehaviour
     [SerializeField] private TMP_Text text;
     [SerializeField] private Material dissolve;
     [SerializeField] private ShaderGraphVfxAsset shader;
-    [SerializeField] private AudioSource audioSource; //HANNA
 
     private float currentDissolve;
 
@@ -30,9 +29,9 @@ public class Painting : MonoBehaviour
          this.gameHandler = gameHandler;
 
         rend = GetComponent<SpriteRenderer>();
-        audioSource = GetComponent<AudioSource>();//HANNA
 
         rend.sprite = this.painting;
+
         text.text = "This is AI = " + isReal;
     }
 
@@ -43,7 +42,6 @@ public class Painting : MonoBehaviour
             if (Keyboard.current.eKey.wasPressedThisFrame)
             {
                 print("E-pressed");
-                audioSource.Play(); //HANNA
                 DestroyPainting();
             }
         }
@@ -51,7 +49,7 @@ public class Painting : MonoBehaviour
 
     private void DestroyPainting()
     {
-        gameHandler.GetComponent<GameHandler>().RemoveMe(!isReal);
+        gameHandler.GetComponent<GameHandler>().RemoveMe(!isReal); //william test score fix
         destroyed = true;
         
         dissolve.SetTexture("_Painting", painting.texture);

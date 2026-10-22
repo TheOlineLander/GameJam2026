@@ -15,12 +15,9 @@ public class GameTimer : MonoBehaviour
     public event System.Action OnTimeUp;
     public float MaxTime => maxTime;
 
-    private LevelChanger levelChanger;
-
     void Start()
     {
-        levelChanger = FindAnyObjectByType<LevelChanger>();
-        StopTimer();
+        StartTimer();
     }
 
     void Update()
@@ -34,7 +31,6 @@ public class GameTimer : MonoBehaviour
             remainingTime = 0f;
             StopTimer();
             OnTimeUp?.Invoke();
-            levelChanger.OnExitDoor();
         }
 
         UpdateUI();
@@ -50,13 +46,6 @@ public class GameTimer : MonoBehaviour
     public void StopTimer()
     {
         isRunning = false;
-    }
-
-    public void ResetTimer()
-    {
-        remainingTime = maxTime;
-        UpdateUI();
-        StopTimer();
     }
 
     public float GetElapsedTime()
@@ -82,10 +71,7 @@ public class GameTimer : MonoBehaviour
             int totalSeconds = Mathf.CeilToInt(remainingTime);
             int minutes = totalSeconds / 60;
             int seconds = totalSeconds % 60;
-            timerText.text = $"{minutes:00}:{seconds:00}";
+            timerText.text = $"Time remaining: {minutes:00}:{seconds:00}";
         }
     }
 }
-
-
-

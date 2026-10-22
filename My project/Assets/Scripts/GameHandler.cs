@@ -122,6 +122,8 @@ public class GameHandler : MonoBehaviour
         if (isReal)
         {
             destroyedReal += 1;
+            //WilliamAddition
+            //Object.FindObjectOfType<ScoreHandler>()?.AddError();
         }
         else
         {

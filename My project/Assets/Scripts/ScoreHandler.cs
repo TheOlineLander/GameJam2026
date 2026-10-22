@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using TMPro;
 
@@ -102,5 +101,3 @@ public class ScoreHandler : MonoBehaviour
         CalculateAndDisplayFinalScore(0);
     }
 }
-
-
