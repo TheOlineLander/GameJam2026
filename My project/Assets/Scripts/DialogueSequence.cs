@@ -10,6 +10,7 @@ public class DialogueSequence : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     private LevelCounter levelcounter;
 
+
     [Header("Player Control")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private bool freezePlayerDuringDialogue = true;
@@ -28,6 +29,9 @@ public class DialogueSequence : MonoBehaviour
     [SerializeField] private float textFadeInDuration = 1f;
     [SerializeField] private float textFadeOutDuration = 1f;
     [SerializeField] private float canvasFadeOutDuration = 1f;
+
+    [Header("Scene Fade")]
+    [SerializeField] private SceneFade sceneFade;
 
 
     private Coroutine dialogueCoroutine;
@@ -95,7 +99,7 @@ public class DialogueSequence : MonoBehaviour
         }
 
         gameObject.SetActive(true);
-
+        sceneFade.ShowFullFade();
         canvasGroup.alpha = 1f;
         dialogueText.alpha = 0f;
 
@@ -124,8 +128,17 @@ public class DialogueSequence : MonoBehaviour
             }
         }
         Debug.Log("Dialogue starts fading out.");
+        if (levelcounter.GetCurrantLevel() < 2)
+        {
             yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
-       
+            Debug.Log("Start coroutine");
+        }
+        else
+        {
+            canvasGroup.alpha = 0f;
+            Debug.Log("Alpha is 0");
+        }
+
 
         SetPlayerControl(true);
         dialogueCoroutine = null;

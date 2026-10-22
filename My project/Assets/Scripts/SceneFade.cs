@@ -7,6 +7,7 @@ public class SceneFade : MonoBehaviour
     [SerializeField] private CanvasGroup fadeCanvasGroup;
     [SerializeField] private float fadeDuration = 1f;
 
+    private Coroutine fadeInCoroutine;
     private void Awake()
     {
         if (fadeCanvasGroup != null)
@@ -61,5 +62,25 @@ public class SceneFade : MonoBehaviour
         }
 
         fadeCanvasGroup.alpha = targetAlpha;
+    }
+
+
+    public void ShowFullFade()
+    {
+        if (fadeInCoroutine != null)
+        {
+            StopCoroutine(fadeInCoroutine);
+            fadeInCoroutine = null;
+        }
+
+        if (fadeCanvasGroup == null)
+        {
+            return;
+        }
+
+        fadeCanvasGroup.gameObject.SetActive(true);
+        fadeCanvasGroup.alpha = 1f;
+        fadeCanvasGroup.blocksRaycasts = true;
+        fadeCanvasGroup.interactable = true;
     }
 }
