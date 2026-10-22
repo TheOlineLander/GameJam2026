@@ -8,6 +8,7 @@ public class DialogueSequence : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI dialogueText;
+    private LevelCounter levelcounter;
 
     [Header("Player Control")]
     [SerializeField] private PlayerMovement playerMovement;
@@ -33,12 +34,19 @@ public class DialogueSequence : MonoBehaviour
 
     private void Start()
     {
-        ShowDialogue(introMessages);
+        levelcounter = FindAnyObjectByType<LevelCounter>();
+        if (levelcounter.GetCurrantLevel()<2)
+        {
+            ShowDialogue(introMessages);
+        }
+        else { canvasGroup.alpha = 0f; }
+        
     }
 
     public void ShowIntroDialogue()
     {
         ShowDialogue(introMessages);
+        Debug.Log("Intro dialogue shown.");
     }
 
     public void ShowSuccessfullMessage()
@@ -56,9 +64,7 @@ public class DialogueSequence : MonoBehaviour
         //hur texten ska se ut
         return new string[]
         {
-            "Congratulations! You have successfully completed the task.",
-            "Your efforts have paid off, and you can now move on to the next challenge.",
-            "Keep up the great work!"
+           "Success! You completed the task. Press Space or Right Mouse Button to continue."
         };
     }
 
@@ -67,9 +73,7 @@ public class DialogueSequence : MonoBehaviour
         //hur texten ska se ut
         return new string[]
         {
-            "Unfortunately, you have failed the task.",
-            "Don't be discouraged! You can try again and improve your skills.",
-            "Remember, failure is just a stepping stone to success."
+            "Failure! You did not complete the task. Press Space or Right Mouse Button to continue."
         };
     }
 
@@ -99,6 +103,7 @@ public class DialogueSequence : MonoBehaviour
 
     private IEnumerator PlayDialogueSequence(string[] messages)
     {
+        Debug.Log("Dialogue sequence started.");
         for (int i = 0; i < messages.Length; i++)
         {
             dialogueText.text = messages[i];
@@ -115,12 +120,13 @@ public class DialogueSequence : MonoBehaviour
                 yield return StartCoroutine(FadeText(1f, 0f, textFadeOutDuration));
             }
         }
-
+        Debug.Log("Dialogue starts fading out.");
         yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
 
         SetPlayerControl(true);
         dialogueCoroutine = null;
         gameObject.SetActive(false);
+        Debug.Log("Dialogue sequence ended.");
     }
 
     private bool IsNextInputPressed()
@@ -152,6 +158,8 @@ public class DialogueSequence : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        Debug.Log("Player can move");
     }
 
     private IEnumerator FadeText(float startAlpha, float targetAlpha, float duration)
@@ -187,4 +195,6 @@ public class DialogueSequence : MonoBehaviour
 
         canvasGroup.alpha = targetAlpha;
     }
+
+    public bool IsDialoguePlaying => dialogueCoroutine != null;
 }

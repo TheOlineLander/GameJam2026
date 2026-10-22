@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,44 +14,46 @@ public class LevelChanger : MonoBehaviour
         levelCounter = FindAnyObjectByType<LevelCounter>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-  
-    }
-
     public void OnExitDoor()
     {
         Debug.Log("Exit door triggered");
 
         if (gameHandler.IsLevelComplete())
         {
-            HandleSuccessfullTask();
+            StartCoroutine(HandleSuccessfullTask());
         }
         else
         {
-            HandleFailedTask();
+            StartCoroutine(HandleFailedTask());
         }
     }
 
-
-
-    private void HandleSuccessfullTask()
+    private IEnumerator HandleSuccessfullTask()
     {
         dialogueSequence.ShowSuccessfullMessage();
-        //show message
-        //Delay for 3 seconds /press space
-        SceneManager.LoadScene("GameMainScene");
+
+        yield return new WaitUntil(
+            () => !dialogueSequence.IsDialoguePlaying);
+
         Debug.Log("Task completed successfully!");
+
+        SceneManager.LoadScene("GameMainScene");
     }
 
-    private void HandleFailedTask()
+    private IEnumerator HandleFailedTask()
     {
         dialogueSequence.ShowFaliedTaskMessage();
+
+        yield return new WaitUntil(
+            () => !dialogueSequence.IsDialoguePlaying);
+
+        Debug.Log("Task failed!");
+
         Destroy(levelCounter.gameObject);
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
         SceneManager.LoadScene("MainMenu");
-        Debug.Log("Task failed!");
     }
 }
