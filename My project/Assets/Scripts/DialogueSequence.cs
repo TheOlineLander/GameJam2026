@@ -39,7 +39,10 @@ public class DialogueSequence : MonoBehaviour
         {
             ShowDialogue(introMessages);
         }
-        else { canvasGroup.alpha = 0f; }
+        else { 
+            canvasGroup.alpha = 0f;
+            gameTimer.StartTimer();
+        }
         
     }
 
