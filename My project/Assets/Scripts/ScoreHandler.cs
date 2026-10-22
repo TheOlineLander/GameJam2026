@@ -127,7 +127,7 @@ public class ScoreHandler : MonoBehaviour
         CalculateAndDisplayFinalScore(index);
     }
 
-    public static float GetTotalCumulativeScore()
+    public float GetTotalCumulativeScore()
     {
         return totalCumulativeScore;
     }

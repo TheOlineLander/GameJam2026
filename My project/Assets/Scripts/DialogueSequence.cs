@@ -9,6 +9,8 @@ public class DialogueSequence : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI dialogueText;
     private LevelCounter levelcounter;
+    private ScoreHandler scoreHandler;
+    [SerializeField] private TextMeshProUGUI PaycheckText;
 
 
     [Header("Player Control")]
@@ -38,7 +40,10 @@ public class DialogueSequence : MonoBehaviour
 
     private void Start()
     {
+        sceneFade = FindObjectOfType<SceneFade>();
+        scoreHandler = FindObjectOfType<ScoreHandler>();
         levelcounter = FindAnyObjectByType<LevelCounter>();
+
         if (levelcounter.GetCurrantLevel()<2)
         {
             ShowDialogue(introMessages);
@@ -72,6 +77,7 @@ public class DialogueSequence : MonoBehaviour
         return new string[]
         {
            "Success! You completed the task. Press Space or Right Mouse Button to continue."
+           + ShowPayCheckText()
         };
     }
 
@@ -81,7 +87,13 @@ public class DialogueSequence : MonoBehaviour
         return new string[]
         {
             "Failure! You did not complete the task. Press Space or Right Mouse Button to continue."
+            + ShowPayCheckText()
         };
+    }
+
+    private string ShowPayCheckText()
+    {
+        return $"You earned:" +scoreHandler.GetTotalCumulativeScore() +" SEK.";
     }
 
     private void ShowDialogue(string[] messages)
@@ -128,16 +140,17 @@ public class DialogueSequence : MonoBehaviour
             }
         }
         Debug.Log("Dialogue starts fading out.");
-        if (levelcounter.GetCurrantLevel() < 2)
+        yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
+        /*if (levelcounter.GetCurrantLevel() < 2)
         {
-            yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
+           
             Debug.Log("Start coroutine");
         }
         else
         {
             canvasGroup.alpha = 0f;
             Debug.Log("Alpha is 0");
-        }
+        }*/
 
 
         SetPlayerControl(true);

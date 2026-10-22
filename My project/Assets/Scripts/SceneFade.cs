@@ -12,7 +12,7 @@ public class SceneFade : MonoBehaviour
     {
         if (fadeCanvasGroup != null)
         {
-            // The scene starts covered by black.
+            fadeCanvasGroup.gameObject.SetActive(true);
             fadeCanvasGroup.alpha = 1f;
             fadeCanvasGroup.blocksRaycasts = true;
             fadeCanvasGroup.interactable = true;
@@ -26,7 +26,13 @@ public class SceneFade : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        StartCoroutine(FadeOutAndLoadScene(sceneName));
+        if (fadeCanvasGroup != null)
+        {
+            fadeCanvasGroup.gameObject.SetActive(true);
+            fadeCanvasGroup.alpha = 1f;
+        }
+
+        SceneManager.LoadScene(sceneName);
     }
 
     private IEnumerator FadeIn()
@@ -67,12 +73,6 @@ public class SceneFade : MonoBehaviour
 
     public void ShowFullFade()
     {
-        if (fadeInCoroutine != null)
-        {
-            StopCoroutine(fadeInCoroutine);
-            fadeInCoroutine = null;
-        }
-
         if (fadeCanvasGroup == null)
         {
             return;
