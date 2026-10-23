@@ -98,17 +98,20 @@ public class DialogueSequence : MonoBehaviour
 
     private string[] GetSuccessfulTaskMessages()
     {
+        string CongratulationsMessage = $"<color=green>Congratulations!\n</color>";
         return new string[]
         {
-            "Congratulations!\n You managed to find all AI generated paintings!\n\n" + ShowPaycheckText()
+            CongratulationsMessage + "You managed to find all AI generated paintings!\n\n" + ShowPaycheckText()
         };
     }
 
     private string[] GetFailedTaskMessages()
     {
+        string Failed = $"<color=red>failed</color>";
+        string fired = $"<color=red>YOU ARE FIRED!\n</color>";
         return new string[]
         {
-            "You failed to destroy all the AI generated paintings!\n YOU ARE FIRED!!!\n\n"+ ShowPaycheckText()
+            "You " + Failed + " to destroy all the AI generated paintings!\n\n " + fired + "\n\n"+ ShowPaycheckText()
         };
     }
 
