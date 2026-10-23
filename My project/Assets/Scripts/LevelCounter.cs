@@ -3,6 +3,7 @@ using UnityEngine;
 public class LevelCounter : MonoBehaviour
 {
     private int currantLevel;
+    private float totalFines;
 
     void Start(){DontDestroyOnLoad(gameObject);}
 
@@ -10,4 +11,11 @@ public class LevelCounter : MonoBehaviour
 
     public int GetCurrantLevel(){
         Debug.Log("Current Level:" + currantLevel); return currantLevel;}
+
+    public float GetTotalFines(){return totalFines; }
+
+    public void AddFine(float fine)
+    {
+        totalFines += fine;
+    }
 }

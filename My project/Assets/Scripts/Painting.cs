@@ -77,7 +77,7 @@ public class Painting : MonoBehaviour
             currentDissolve += dissolveAmount;
             yield return new WaitForSeconds(dissolveSpeed);
         }
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
 

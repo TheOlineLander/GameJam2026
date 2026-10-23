@@ -27,8 +27,15 @@ public class ScoreHandler : MonoBehaviour
 
     private int wrongBurns = 0; // Penalty for burning a Real painting
     private int missedAIPaintings = 0; // Penalty for missing/leaving AI paintings unburned
-    private int fines = 0; // Penalty for fines (if applicable)
+    private float fines = 0; // Penalty for fines (if applicable)
 
+    private float newFines;
+    private float beforeFines;
+    private float afterFines;
+
+    private int totalScore;
+
+    private LevelCounter levelCounter;
     /*
     private int level1Score= 0;
     private int level2Score= 0;
@@ -47,6 +54,16 @@ public class ScoreHandler : MonoBehaviour
     // Cumulative score across multiple rounds/reloads
     private static float totalCumulativeScore = 0f;
 
+    public int GetTotalScore()
+    {
+        return totalScore;
+    }
+
+    public void ResetTotalScore()
+    {
+        totalScore = 0;
+    }
+
     public void AddError()
     {
         wrongBurns++;
@@ -61,6 +78,12 @@ public class ScoreHandler : MonoBehaviour
     {
         wrongBurns = 0;
         missedAIPaintings = 0;
+    }
+
+    public void ResetScore()
+    {         totalCumulativeScore = 0f;
+        fines = 0;
+        ResetErrors();
     }
 
     public float CalculateAndDisplayFinalScore(int levelIndex)
@@ -108,11 +131,14 @@ public class ScoreHandler : MonoBehaviour
         float scoreBeforePenalties = basePlusBonus;
         float finalScore = scoreBeforePenalties * Mathf.Pow(0.75f, totalErrors);
 
-
-        fines = Mathf.Max(
+        fines += scoreBeforePenalties - finalScore;
+        beforeFines = scoreBeforePenalties;
+        afterFines = finalScore;
+        /*
+        fines += Mathf.Max(
             0,
             Mathf.RoundToInt(scoreBeforePenalties - finalScore)
-        );
+        );*/
         // Accumulate into the total lifetime earnings
         totalCumulativeScore += finalScore;
 
@@ -125,6 +151,9 @@ public class ScoreHandler : MonoBehaviour
         Debug.Log($"Level: {currentLevel.levelName} | Time: {timeSpent:F1}s | Wrong Burns: {wrongBurns} | Missed AI: {missedAIPaintings} | Round Score: {finalScore:F2} | Total Cumulative: {totalCumulativeScore:F2}");
 
         ResetErrors();
+
+        totalScore += (int)finalScore;
+
         return finalScore;
     }
 
@@ -162,7 +191,11 @@ public class ScoreHandler : MonoBehaviour
 
     public float GetFines()
     {
-        return fines;
+        levelCounter = FindAnyObjectByType<LevelCounter>();
+
+        levelCounter.AddFine(beforeFines - afterFines);
+
+        return levelCounter.GetTotalFines();
     }
 
     public int GetTotalErrors()

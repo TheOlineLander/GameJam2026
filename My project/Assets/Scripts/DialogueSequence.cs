@@ -127,6 +127,7 @@ public class DialogueSequence : MonoBehaviour
 
     private string[] GetLastText()
     {
+        print("TotalScore: " + scoreHandler.GetTotalCumulativeScore());
         // SÄKERHETSKONTROLL: Om scoreHandler är null, kraschar inte spelet.
         if (scoreHandler == null)
         {
@@ -144,6 +145,7 @@ public class DialogueSequence : MonoBehaviour
 
     private void ShowDialogue(string[] messages)
     {
+        
         if (gameTimer != null) gameTimer.ResetTimer();
 
         if (messages == null || messages.Length == 0)

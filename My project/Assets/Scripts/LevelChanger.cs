@@ -8,13 +8,24 @@ public class LevelChanger : MonoBehaviour
     private LevelCounter levelCounter;
     private GameHandler gameHandler;
     [SerializeField] private SceneFade sceneFade;
+    private ScoreHandler scoreHandler;
 
     void Start()
     {
         gameHandler = FindAnyObjectByType<GameHandler>();
         levelCounter = FindAnyObjectByType<LevelCounter>();
+        scoreHandler = FindAnyObjectByType<ScoreHandler>();
 
-        if(levelCounter.GetCurrantLevel() == 6)
+        if (levelCounter.GetCurrantLevel() == 1 && levelCounter.GetCurrantLevel() != 6)
+        {
+            Debug.Log("First level reached starting handle first text");
+
+            
+            scoreHandler.ResetTotalScore();
+
+        }
+
+        if (levelCounter.GetCurrantLevel() == 6)
         {
             Debug.Log("Last level reached starting handle last text");
             StartCoroutine(HandleLastText());

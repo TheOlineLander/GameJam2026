@@ -27,17 +27,19 @@ public class MainMenuManager : MonoBehaviour
 
     private VideoPlayer videoPlayer;
     private HighScoreDisplay highScoreDisplay;
-    
+    private ScoreHandler scoreHandler;
+
     private void Awake()
     {
         videoPlayer = videoPlayerObject.GetComponent<VideoPlayer>();
         highScoreDisplay = highScorePanel.GetComponent<HighScoreDisplay>();
+        scoreHandler = FindAnyObjectByType<ScoreHandler>();
         highScoreDisplay.InitializeDisplay();
     }
 
     public void StartGame()
     {
-                SceneManager.LoadScene("GameMainScene");
+        SceneManager.LoadScene("GameMainScene");
     }
 
     public void EnterCredits()
