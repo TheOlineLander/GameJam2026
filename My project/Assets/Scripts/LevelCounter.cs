@@ -3,7 +3,7 @@ using UnityEngine;
 public class LevelCounter : MonoBehaviour
 {
     private int currantLevel;
-    private float totalFines;
+    [SerializeField] private float totalFines;
 
     void Start(){DontDestroyOnLoad(gameObject);}
 

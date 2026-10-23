@@ -42,7 +42,6 @@ public class SceneFade : MonoBehaviour
             fadeCanvasGroup.gameObject.SetActive(true);
             fadeCanvasGroup.alpha = 1f;
         }
-
         SceneManager.LoadScene(sceneName);
     }
 

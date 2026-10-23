@@ -136,7 +136,7 @@ public class DialogueSequence : MonoBehaviour
         }
 
         string lastText = $"The week is over and your total earnings are:\n" +
-            $"<color=green>Your total earned: {scoreHandler.GetTotalScore():N0} MONEY.</color>" +
+            $"<color=green>Your total earned: {scoreHandler.GetTotalCumulativeScore():N0} MONEY.</color>" +
             $"\n<color=red>Your total fines: {scoreHandler.GetFines():N0} MONEY.</color>";
 
         return new string[] { lastText };
