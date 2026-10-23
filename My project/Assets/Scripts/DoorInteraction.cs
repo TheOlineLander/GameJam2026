@@ -18,11 +18,14 @@ public class DoorInteraction : MonoBehaviour
     private LevelChanger levelChanger;
     private ScoreHandler scoreHandler;
 
+    private AudioSource audio;
+
     private void Start()
     {
         levelChanger = FindAnyObjectByType<LevelChanger>();
         interactAction = InputSystem.actions.FindAction("Interact");
         scoreHandler = FindAnyObjectByType<ScoreHandler>();
+        audio = GetComponent<AudioSource>();
 
         if (player == null)
         {
@@ -57,7 +60,8 @@ public class DoorInteraction : MonoBehaviour
         {
             if (Keyboard.current.eKey.wasPressedThisFrame)
             {
-                print("E-pressed");
+               audio.PlayOneShot(audio.clip);
+                //print("E-pressed");
                 scoreHandler?.SaveCurrentLevelScore(); //William
                 levelChanger.OnExitDoor();
             }

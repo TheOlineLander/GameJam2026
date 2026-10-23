@@ -27,6 +27,22 @@ public class ScoreHandler : MonoBehaviour
 
     private int wrongBurns = 0; // Penalty for burning a Real painting
     private int missedAIPaintings = 0; // Penalty for missing/leaving AI paintings unburned
+    private int fines = 0; // Penalty for fines (if applicable)
+
+    /*
+    private int level1Score= 0;
+    private int level2Score= 0;
+    private int level3Score= 0;
+    private int level4Score= 0;
+    private int level5Score= 0;
+
+    private int level1Fines= 0;
+    private int level2Fines= 0;
+    private int level3Fines= 0;
+    private int level4Fines= 0;
+    private int level5Fines= 0;
+
+    */
 
     // Cumulative score across multiple rounds/reloads
     private static float totalCumulativeScore = 0f;
@@ -72,6 +88,12 @@ public class ScoreHandler : MonoBehaviour
             missedAIPaintings = unburnedAI; // assign, don't add
         }
 
+        int wrongRealPaintings = handler != null
+    ? handler.GetDestroyedReal()
+    : wrongBurns;
+
+        int totalErrors = wrongRealPaintings + missedAIPaintings;
+
         // 2. Handle Timer
         float timeSpent = gameTimer != null ? gameTimer.GetElapsedTime() : 0f;
         if (gameTimer != null) gameTimer.StopTimer();
@@ -82,9 +104,15 @@ public class ScoreHandler : MonoBehaviour
         float basePlusBonus = currentLevel.flatSum + timeBonus;
 
         // Total penalty count combines wrong burns + missed AI paintings
-        int totalErrors = wrongBurns + missedAIPaintings;
-        float finalScore = basePlusBonus * Mathf.Pow(0.75f, totalErrors);
+        //int totalErrors = wrongBurns + missedAIPaintings;
+        float scoreBeforePenalties = basePlusBonus;
+        float finalScore = scoreBeforePenalties * Mathf.Pow(0.75f, totalErrors);
 
+
+        fines = Mathf.Max(
+            0,
+            Mathf.RoundToInt(scoreBeforePenalties - finalScore)
+        );
         // Accumulate into the total lifetime earnings
         totalCumulativeScore += finalScore;
 
@@ -127,10 +155,31 @@ public class ScoreHandler : MonoBehaviour
         CalculateAndDisplayFinalScore(index);
     }
 
-    public static float GetTotalCumulativeScore()
+    public float GetTotalCumulativeScore()
     {
         return totalCumulativeScore;
     }
+
+    public float GetFines()
+    {
+        return fines;
+    }
+
+    public int GetTotalErrors()
+    {
+        return wrongBurns + missedAIPaintings;
+    }
+
+ /*   public int FinesPerLevel()
+    {
+        int Level1Score = (int)SaveCurrentLevelScore();
+        return 0;
+    }
+
+    public int MoneyPerLevel()
+    {
+        return 0;
+    }*/
 
     // Test Function: displays the accumulated total amount gained so far
     [ContextMenu("Test Total Score")]

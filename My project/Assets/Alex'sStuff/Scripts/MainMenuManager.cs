@@ -10,6 +10,7 @@ public class MainMenuManager : MonoBehaviour
     [Header("MainUIComponents")]
     [SerializeField] private GameObject titleObject;
     [SerializeField] private GameObject buttonsPanel;
+    [SerializeField] private GameObject credits;
 
     [Header("HighScore")]
     [SerializeField] private GameObject highScorePanel;
@@ -37,6 +38,15 @@ public class MainMenuManager : MonoBehaviour
     public void StartGame()
     {
                 SceneManager.LoadScene("GameMainScene");
+    }
+
+    public void EnterCredits()
+    {
+        credits.SetActive(true);
+    }
+    public void ExitCredits()
+    {
+        credits.SetActive(false);
     }
 
     #region Button Handlers

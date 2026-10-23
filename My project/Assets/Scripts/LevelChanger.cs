@@ -13,19 +13,32 @@ public class LevelChanger : MonoBehaviour
     {
         gameHandler = FindAnyObjectByType<GameHandler>();
         levelCounter = FindAnyObjectByType<LevelCounter>();
+
+        if(levelCounter.GetCurrantLevel() == 6)
+        {
+            Debug.Log("Last level reached starting handle last text");
+            StartCoroutine(HandleLastText());
+
+        }
     }
 
     public void OnExitDoor()
     {
         Debug.Log("Exit door triggered");
-
-        if (gameHandler.IsLevelComplete())
+        if (levelCounter.GetCurrantLevel() <6)
         {
-            StartCoroutine(HandleSuccessfullTask());
+            if (gameHandler.IsLevelComplete())
+            {
+                StartCoroutine(HandleSuccessfullTask());
+            }
+            else
+            {
+                StartCoroutine(HandleFailedTask());
+            }
         }
         else
         {
-            StartCoroutine(HandleFailedTask());
+           // StartCoroutine(HandleLastText());
         }
     }
 
@@ -57,4 +70,23 @@ public class LevelChanger : MonoBehaviour
 
         sceneFade.LoadScene("MainMenu");
     }
+
+    private IEnumerator HandleLastText()
+    {
+        dialogueSequence.ShowLastMessage();
+
+        yield return new WaitUntil(
+            () => !dialogueSequence.IsDialoguePlaying);
+
+        Debug.Log("Mission Complete!");
+
+        Destroy(levelCounter.gameObject);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+
 }

@@ -8,5 +8,6 @@ public class LevelCounter : MonoBehaviour
 
     private void OnLevelWasLoaded(int level){currantLevel++; print("Level:" + currantLevel); }
 
-    public int GetCurrantLevel(){return currantLevel;}
+    public int GetCurrantLevel(){
+        Debug.Log("Current Level:" + currantLevel); return currantLevel;}
 }

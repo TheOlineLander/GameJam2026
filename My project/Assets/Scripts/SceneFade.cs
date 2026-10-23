@@ -7,11 +7,14 @@ public class SceneFade : MonoBehaviour
     [SerializeField] private CanvasGroup fadeCanvasGroup;
     [SerializeField] private float fadeDuration = 1f;
 
+    private LevelCounter levelCounter;
+
+    private Coroutine fadeInCoroutine;
     private void Awake()
     {
         if (fadeCanvasGroup != null)
         {
-            // The scene starts covered by black.
+            fadeCanvasGroup.gameObject.SetActive(true);
             fadeCanvasGroup.alpha = 1f;
             fadeCanvasGroup.blocksRaycasts = true;
             fadeCanvasGroup.interactable = true;
@@ -20,12 +23,27 @@ public class SceneFade : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(FadeIn());
+        levelCounter= FindAnyObjectByType<LevelCounter>();
+        
+
+        if(levelCounter.GetCurrantLevel() == 6)
+        {
+            fadeCanvasGroup.alpha = 1f;
+        }
+        else {
+            StartCoroutine(FadeIn());
+        }
     }
 
     public void LoadScene(string sceneName)
     {
-        StartCoroutine(FadeOutAndLoadScene(sceneName));
+        if (fadeCanvasGroup != null)
+        {
+            fadeCanvasGroup.gameObject.SetActive(true);
+            fadeCanvasGroup.alpha = 1f;
+        }
+
+        SceneManager.LoadScene(sceneName);
     }
 
     private IEnumerator FadeIn()
@@ -61,5 +79,19 @@ public class SceneFade : MonoBehaviour
         }
 
         fadeCanvasGroup.alpha = targetAlpha;
+    }
+
+
+    public void ShowFullFade()
+    {
+        if (fadeCanvasGroup == null)
+        {
+            return;
+        }
+
+        fadeCanvasGroup.gameObject.SetActive(true);
+        fadeCanvasGroup.alpha = 1f;
+        fadeCanvasGroup.blocksRaycasts = true;
+        fadeCanvasGroup.interactable = true;
     }
 }

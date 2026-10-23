@@ -9,6 +9,9 @@ public class DialogueSequence : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI dialogueText;
     private LevelCounter levelcounter;
+    private ScoreHandler scoreHandler;
+    [SerializeField] private TextMeshProUGUI PaycheckText;
+
 
     [Header("Player Control")]
     [SerializeField] private PlayerMovement playerMovement;
@@ -23,28 +26,53 @@ public class DialogueSequence : MonoBehaviour
     [Header("Task Result Text")]
     [SerializeField] private TextMeshProUGUI successfulTaskText;
     [SerializeField] private TextMeshProUGUI failedTaskText;
+    [SerializeField] private TextMeshProUGUI lastTaskText;
 
     [Header("Timing")]
     [SerializeField] private float textFadeInDuration = 1f;
     [SerializeField] private float textFadeOutDuration = 1f;
     [SerializeField] private float canvasFadeOutDuration = 1f;
 
+    [Header("Scene Fade")]
+    private SceneFade sceneFade;
+
 
     private Coroutine dialogueCoroutine;
 
+    private void Awake()
+    {
+        // Vi letar efter referenser i Awake i stället för Start 
+        // för att säkerställa att de finns redo innan andra script anropar dem.
+        sceneFade = FindObjectOfType<SceneFade>();
+        scoreHandler = FindObjectOfType<ScoreHandler>();
+        levelcounter = FindAnyObjectByType<LevelCounter>();
+    }
+
     private void Start()
     {
-        levelcounter = FindAnyObjectByType<LevelCounter>();
-        if (levelcounter.GetCurrantLevel()<2)
+        if (levelcounter == null)
+        {
+            Debug.LogError("DialogueSequence: LevelCounter saknas i scenen!");
+            return;
+        }
+
+        if (levelcounter.GetCurrantLevel() < 2)
         {
             ShowDialogue(introMessages);
         }
-        else { 
+        else if (levelcounter.GetCurrantLevel() <= 5)
+        {
             canvasGroup.alpha = 0f;
-            gameTimer.StartTimer();
+            if (gameTimer != null) gameTimer.StartTimer();
         }
-        
+        else if (levelcounter.GetCurrantLevel() == 6)
+        {
+            Debug.Log("Level 6 reached. Showing last message.");
+            ShowLastMessage();
+            StartCoroutine(WaitAndGoToMainMenu());
+        }
     }
+
 
     public void ShowIntroDialogue()
     {
@@ -62,27 +90,61 @@ public class DialogueSequence : MonoBehaviour
         ShowDialogue(GetFailedTaskMessages());
     }
 
-    private string [] GetSuccessfulTaskMessages()
+    public void ShowLastMessage()
     {
-        //hur texten ska se ut
+        Debug.Log("Showing last message.");
+        ShowDialogue(GetLastText());
+    }
+
+    private string[] GetSuccessfulTaskMessages()
+    {
+        string CongratulationsMessage = $"<color=green>Congratulations!\n</color>";
         return new string[]
         {
-           "Success! You completed the task. Press Space or Right Mouse Button to continue."
+            CongratulationsMessage + "You managed to find all AI generated paintings!\n\n" + ShowPaycheckText()
         };
     }
 
-    private string [] GetFailedTaskMessages()
+    private string[] GetFailedTaskMessages()
     {
-        //hur texten ska se ut
+        string Failed = $"<color=red>failed</color>";
+        string fired = $"<color=red>YOU ARE FIRED!\n</color>";
         return new string[]
         {
-            "Failure! You did not complete the task. Press Space or Right Mouse Button to continue."
+            "You " + Failed + " to destroy all the AI generated paintings!\n\n " + fired + "\n\n"+ ShowPaycheckText()
         };
     }
+
+    private string ShowPaycheckText()
+    {
+        if (scoreHandler == null) return "Score data unavailable.";
+
+        string paycheck = $"<color=green>Your expected paycheck: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>";
+        string fines = $"<color=red>Your fines: {scoreHandler.GetFines():N0} SEK.</color>";
+
+        return paycheck + "\n" + fines;
+    }
+
+    private string[] GetLastText()
+    {
+        // SÄKERHETSKONTROLL: Om scoreHandler är null, kraschar inte spelet.
+        if (scoreHandler == null)
+        {
+            Debug.LogError("DialogueSequence: scoreHandler är null i GetLastText!");
+            return new string[] { "The week is over, but your score data could not be loaded." };
+        }
+
+        string lastText = $"The week is over and your total earnings are:\n" +
+            $"<color=green>Your total earned: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>" +
+            $"\n<color=red>Your total fines: {scoreHandler.GetFines():N0} SEK.</color>";
+
+        return new string[] { lastText };
+    }
+
 
     private void ShowDialogue(string[] messages)
     {
-        gameTimer.ResetTimer(); //TIMER MAYBE MOVE
+        if (gameTimer != null) gameTimer.ResetTimer();
 
         if (messages == null || messages.Length == 0)
         {
@@ -95,9 +157,10 @@ public class DialogueSequence : MonoBehaviour
         }
 
         gameObject.SetActive(true);
+        if (sceneFade != null) sceneFade.ShowFullFade();
 
-        canvasGroup.alpha = 1f;
-        dialogueText.alpha = 0f;
+        if (canvasGroup != null) canvasGroup.alpha = 1f;
+        if (dialogueText != null) dialogueText.alpha = 0f;
 
         SetPlayerControl(false);
 
@@ -109,11 +172,11 @@ public class DialogueSequence : MonoBehaviour
         Debug.Log("Dialogue sequence started.");
         for (int i = 0; i < messages.Length; i++)
         {
-            dialogueText.text = messages[i];
+            if (dialogueText != null) dialogueText.text = messages[i];
 
             yield return StartCoroutine(FadeText(0f, 1f, textFadeInDuration));
 
-            // Wait for Space or Right Mouse Button.
+            // Vänta på Space eller högerklick
             yield return new WaitUntil(IsNextInputPressed);
 
             bool isLastMessage = i == messages.Length - 1;
@@ -124,10 +187,9 @@ public class DialogueSequence : MonoBehaviour
             }
         }
         Debug.Log("Dialogue starts fading out.");
-            yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
-       
-
         SetPlayerControl(true);
+        yield return StartCoroutine(FadeCanvas(1f, 0f, canvasFadeOutDuration));
+
         dialogueCoroutine = null;
         gameObject.SetActive(false);
         Debug.Log("Dialogue sequence ended.");
@@ -135,26 +197,23 @@ public class DialogueSequence : MonoBehaviour
 
     private bool IsNextInputPressed()
     {
-        bool spacePressed =
-            Keyboard.current != null &&
-            Keyboard.current.spaceKey.wasPressedThisFrame;
-
-        bool rightMouseButtonPressed =
-            Mouse.current != null &&
-            Mouse.current.rightButton.wasPressedThisFrame;
+        bool spacePressed = Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
+        bool rightMouseButtonPressed = Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame;
 
         return spacePressed || rightMouseButtonPressed;
     }
 
     private void SetPlayerControl(bool canControlPlayer)
     {
-        playerMovement.SetGameplayFOV();
-
-        if (freezePlayerDuringDialogue)
+        if (playerMovement != null)
         {
-            playerMovement.enabled = canControlPlayer;
+            playerMovement.SetGameplayFOV();
+            if (freezePlayerDuringDialogue)
+            {
+                playerMovement.enabled = canControlPlayer;
+            }
         }
-        //timer
+
         if (canControlPlayer && gameTimer != null)
         {
             gameTimer.StartTimer();
@@ -162,21 +221,18 @@ public class DialogueSequence : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        Debug.Log("Player can move");
     }
 
     private IEnumerator FadeText(float startAlpha, float targetAlpha, float duration)
     {
+        if (dialogueText == null) yield break;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-
             float progress = Mathf.Clamp01(elapsedTime / duration);
             dialogueText.alpha = Mathf.Lerp(startAlpha, targetAlpha, progress);
-
             yield return null;
         }
 
@@ -185,20 +241,42 @@ public class DialogueSequence : MonoBehaviour
 
     private IEnumerator FadeCanvas(float startAlpha, float targetAlpha, float duration)
     {
+        if (canvasGroup == null) yield break;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-
             float progress = Mathf.Clamp01(elapsedTime / duration);
             canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, progress);
-
             yield return null;
         }
 
         canvasGroup.alpha = targetAlpha;
     }
 
+    private IEnumerator WaitAndGoToMainMenu()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        // Vänta tills dialogen har spelats klart helt och hållet
+        yield return new WaitUntil(() => !IsDialoguePlaying);
+
+        Debug.Log("End of game. Loading Main Menu...");
+        if (levelcounter != null)
+        {
+            Destroy(levelcounter.gameObject);
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (sceneFade != null)
+        {
+            sceneFade.LoadScene("MainMenu");
+        }
+    }
+
+    // Fixade den avklippta propertyn här:
     public bool IsDialoguePlaying => dialogueCoroutine != null;
 }

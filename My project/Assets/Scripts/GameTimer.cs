@@ -5,6 +5,7 @@ public class GameTimer : MonoBehaviour
 {
     [Header("UI-koppling")]
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text DayText;
 
     [Header("Inställningar")]
     [SerializeField] private float maxTime = 180f;
@@ -16,9 +17,11 @@ public class GameTimer : MonoBehaviour
     public float MaxTime => maxTime;
 
     private LevelChanger levelChanger;
+    private LevelCounter levelCounter;
 
     void Start()
     {
+        levelCounter=FindAnyObjectByType<LevelCounter>();
         levelChanger = FindAnyObjectByType<LevelChanger>();
         StopTimer();
     }
@@ -45,13 +48,13 @@ public class GameTimer : MonoBehaviour
         remainingTime = maxTime;
         isRunning = true;
         UpdateUI();
-        Debug.Log("Timer started with max time: " + maxTime + " seconds.");
+  
     }
 
     public void StopTimer()
     {
         isRunning = false;
-        Debug.Log("Timer stopped with remaining time: " + remainingTime + " seconds.");
+
     }
 
     public void ResetTimer()
@@ -59,7 +62,7 @@ public class GameTimer : MonoBehaviour
         remainingTime = maxTime;
         UpdateUI();
         StopTimer();
-        Debug.Log("Timer reset to max time: " + maxTime + " seconds.");
+     
     }
 
     public float GetElapsedTime()
@@ -87,7 +90,9 @@ public class GameTimer : MonoBehaviour
             int seconds = totalSeconds % 60;
             timerText.text = $"{minutes:00}:{seconds:00}";
         }
-        Debug.Log("Timer updated in ui " + timerText.text);
+        DayText.text = "Shift: " + levelCounter.GetCurrantLevel().ToString();
+        
+
     }
 }
 
