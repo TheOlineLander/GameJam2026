@@ -53,11 +53,14 @@ public class Painting : MonoBehaviour
 
     private void DestroyPainting()
     {
-        destroyed = true;
-        zippo = GameObject.FindGameObjectWithTag("Zip");
-        zippo.GetComponent<Animator>().SetTrigger("Light");
+        if (!destroyed)
+        {
+            destroyed = true;
+            zippo = GameObject.FindGameObjectWithTag("Zip");
+            zippo.GetComponent<Animator>().SetTrigger("Light");
 
-        StartCoroutine(Burn());
+            StartCoroutine(Burn());
+        }
     }
 
     private IEnumerator Burn()
