@@ -7,6 +7,8 @@ public class SceneFade : MonoBehaviour
     [SerializeField] private CanvasGroup fadeCanvasGroup;
     [SerializeField] private float fadeDuration = 1f;
 
+    private LevelCounter levelCounter;
+
     private Coroutine fadeInCoroutine;
     private void Awake()
     {
@@ -21,7 +23,16 @@ public class SceneFade : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(FadeIn());
+        levelCounter= FindAnyObjectByType<LevelCounter>();
+        
+
+        if(levelCounter.GetCurrantLevel() == 6)
+        {
+            fadeCanvasGroup.alpha = 1f;
+        }
+        else {
+            StartCoroutine(FadeIn());
+        }
     }
 
     public void LoadScene(string sceneName)

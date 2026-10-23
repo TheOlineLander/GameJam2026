@@ -85,7 +85,7 @@ public class LevelChanger : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        sceneFade.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 
 
