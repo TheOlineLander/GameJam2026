@@ -119,8 +119,8 @@ public class DialogueSequence : MonoBehaviour
     {
         if (scoreHandler == null) return "Score data unavailable.";
 
-        string paycheck = $"<color=green>Your expected paycheck: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>";
-        string fines = $"<color=red>Your fines: {scoreHandler.GetFines():N0} SEK.</color>";
+        string paycheck = $"<color=green>Your expected paycheck: {scoreHandler.GetTotalCumulativeScore():N0} MONEY.</color>";
+        string fines = $"<color=red>Your fines: {scoreHandler.GetFines():N0} MONEY.</color>";
 
         return paycheck + "\n" + fines;
     }
@@ -136,8 +136,8 @@ public class DialogueSequence : MonoBehaviour
         }
 
         string lastText = $"The week is over and your total earnings are:\n" +
-            $"<color=green>Your total earned: {scoreHandler.GetTotalCumulativeScore():N0} SEK.</color>" +
-            $"\n<color=red>Your total fines: {scoreHandler.GetFines():N0} SEK.</color>";
+            $"<color=green>Your total earned: {scoreHandler.GetTotalScore():N0} MONEY.</color>" +
+            $"\n<color=red>Your total fines: {scoreHandler.GetFines():N0} MONEY.</color>";
 
         return new string[] { lastText };
     }
