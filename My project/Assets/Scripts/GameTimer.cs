@@ -5,6 +5,7 @@ public class GameTimer : MonoBehaviour
 {
     [Header("UI-koppling")]
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text DayText;
 
     [Header("Inställningar")]
     [SerializeField] private float maxTime = 180f;
@@ -16,9 +17,11 @@ public class GameTimer : MonoBehaviour
     public float MaxTime => maxTime;
 
     private LevelChanger levelChanger;
+    private LevelCounter levelCounter;
 
     void Start()
     {
+        levelCounter=FindAnyObjectByType<LevelCounter>();
         levelChanger = FindAnyObjectByType<LevelChanger>();
         StopTimer();
     }
@@ -87,7 +90,9 @@ public class GameTimer : MonoBehaviour
             int seconds = totalSeconds % 60;
             timerText.text = $"{minutes:00}:{seconds:00}";
         }
-  
+        DayText.text = "Shift: " + levelCounter.GetCurrantLevel().ToString();
+        
+
     }
 }
 
