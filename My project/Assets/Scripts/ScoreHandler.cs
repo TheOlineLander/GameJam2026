@@ -47,6 +47,23 @@ public class ScoreHandler : MonoBehaviour
     // Cumulative score across multiple rounds/reloads
     private static float totalCumulativeScore = 0f;
 
+<<<<<<< Updated upstream
+=======
+    public int GetTotalScore()
+    {
+        return totalScore;
+    }
+
+    public void ResetTotalScore()
+    {
+        totalScore = 0;
+        newFines = 0;
+        beforeFines = 0;
+        afterFines = 0;
+        totalCumulativeScore = 0f;
+    }
+
+>>>>>>> Stashed changes
     public void AddError()
     {
         wrongBurns++;
@@ -63,6 +80,16 @@ public class ScoreHandler : MonoBehaviour
         missedAIPaintings = 0;
     }
 
+<<<<<<< Updated upstream
+=======
+    public void ResetScore()
+    {         
+        totalCumulativeScore = 0f;
+        fines = 0;
+        ResetErrors();
+    }
+
+>>>>>>> Stashed changes
     public float CalculateAndDisplayFinalScore(int levelIndex)
     {
         if (levelIndex < 0 || levelIndex >= levels.Length)

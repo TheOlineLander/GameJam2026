@@ -14,7 +14,21 @@ public class LevelChanger : MonoBehaviour
         gameHandler = FindAnyObjectByType<GameHandler>();
         levelCounter = FindAnyObjectByType<LevelCounter>();
 
+<<<<<<< Updated upstream
         if(levelCounter.GetCurrantLevel() == 6)
+=======
+        if (levelCounter.GetCurrantLevel() == 1 && levelCounter.GetCurrantLevel() != 6)
+        {
+            Debug.Log("First level reached starting handle first text");
+
+            print(scoreHandler.GetTotalScore());
+            scoreHandler.ResetTotalScore();
+            print(scoreHandler.GetTotalScore());
+
+        }
+
+        if (levelCounter.GetCurrantLevel() == 6)
+>>>>>>> Stashed changes
         {
             Debug.Log("Last level reached starting handle last text");
             StartCoroutine(HandleLastText());
@@ -44,18 +58,19 @@ public class LevelChanger : MonoBehaviour
 
     private IEnumerator HandleSuccessfullTask()
     {
+        //scoreHandler?.SaveCurrentLevelScore();
         dialogueSequence.ShowSuccessfullMessage();
 
         yield return new WaitUntil(
             () => !dialogueSequence.IsDialoguePlaying);
 
         Debug.Log("Task completed successfully!");
-
         sceneFade.LoadScene("GameMainScene");
     }
 
     private IEnumerator HandleFailedTask()
     {
+
         dialogueSequence.ShowFaliedTaskMessage();
 
         yield return new WaitUntil(
@@ -67,6 +82,7 @@ public class LevelChanger : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        scoreHandler.ResetTotalScore();
 
         sceneFade.LoadScene("MainMenu");
     }

@@ -78,7 +78,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Painting:
+<<<<<<< Updated upstream
         m_Texture: {fileID: 2800000, guid: 3c02844f440931a48ab9d3f97dccc539, type: 3}
+=======
+        m_Texture: {fileID: 2800000, guid: 17b2425cc96b0a94781ffa826d45adee, type: 3}
+>>>>>>> Stashed changes
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
