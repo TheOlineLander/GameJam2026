@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class LevelChanger : MonoBehaviour
 {
     [SerializeField] private DialogueSequence dialogueSequence;
+    [SerializeField] private GameObject spawnSpot;
     private LevelCounter levelCounter;
     private GameHandler gameHandler;
     [SerializeField] private SceneFade sceneFade;
@@ -12,16 +13,24 @@ public class LevelChanger : MonoBehaviour
 
     void Start()
     {
+
+        Debug.Log("LevelChanger starts here");
         gameHandler = FindAnyObjectByType<GameHandler>();
         levelCounter = FindAnyObjectByType<LevelCounter>();
         scoreHandler = FindAnyObjectByType<ScoreHandler>();
+        
+        //playerMovement.SpawnPlayer(spawnSpot);
 
+        scoreHandler.PrintNumbers();
+        
+        //doorInteraction.SetCanExit(false);
         if (levelCounter.GetCurrantLevel() == 1 && levelCounter.GetCurrantLevel() != 6)
         {
             Debug.Log("First level reached starting handle first text");
 
             
             scoreHandler.ResetTotalScore();
+            scoreHandler.PrintNumbers();
 
         }
 
@@ -73,7 +82,8 @@ public class LevelChanger : MonoBehaviour
             () => !dialogueSequence.IsDialoguePlaying);
 
         Debug.Log("Task failed!");
-
+        scoreHandler.ResetTotalScore();
+        scoreHandler.PrintNumbers();
         Destroy(levelCounter.gameObject);
 
         Cursor.lockState = CursorLockMode.None;

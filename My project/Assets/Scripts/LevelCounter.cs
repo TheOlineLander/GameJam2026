@@ -10,7 +10,7 @@ public class LevelCounter : MonoBehaviour
     private void OnLevelWasLoaded(int level){currantLevel++; print("Level:" + currantLevel); }
 
     public int GetCurrantLevel(){
-        Debug.Log("Current Level:" + currantLevel); return currantLevel;}
+     return currantLevel;}
 
     public float GetTotalFines(){return totalFines; }
 

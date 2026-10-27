@@ -14,6 +14,7 @@ public class DoorInteraction : MonoBehaviour
   
     private InputAction interactAction;
     private bool canExit;
+    private bool hasLeftLevel;
     private bool dialogueStarted;
     private LevelChanger levelChanger;
     private ScoreHandler scoreHandler;
@@ -38,6 +39,12 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
+    public bool SetCanExit(bool value)
+    {
+        canExit = value;
+        return canExit;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -56,11 +63,12 @@ public class DoorInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (canExit)
+        if (canExit && !hasLeftLevel)
         {
             if (Keyboard.current.eKey.wasPressedThisFrame)
             {
-               audio.PlayOneShot(audio.clip);
+                hasLeftLevel = true;
+                audio.PlayOneShot(audio.clip);
                 //print("E-pressed");
                 scoreHandler?.SaveCurrentLevelScore(); //William
                 levelChanger.OnExitDoor();

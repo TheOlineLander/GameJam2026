@@ -56,12 +56,18 @@ public class ScoreHandler : MonoBehaviour
 
     public int GetTotalScore()
     {
+        PrintNumbers();
         return totalScore;
     }
 
     public void ResetTotalScore()
     {
         totalScore = 0;
+        totalCumulativeScore = 0f; 
+        fines = 0f;
+        Debug.Log("ScoreHandler: Resetting scores from " + totalScore + " and " + totalCumulativeScore);
+
+        PrintNumbers();
     }
 
     public void AddError()
@@ -83,6 +89,7 @@ public class ScoreHandler : MonoBehaviour
     public void ResetScore()
     {         totalCumulativeScore = 0f;
         fines = 0;
+        PrintNumbers();
         ResetErrors();
     }
 
@@ -173,6 +180,7 @@ public class ScoreHandler : MonoBehaviour
     public float SaveCurrentLevelScore()
     {
         int levelIndex = GetCurrentLevelIndexFromCounter();
+        PrintNumbers();
         return CalculateAndDisplayFinalScore(levelIndex);
     }
 
@@ -186,6 +194,7 @@ public class ScoreHandler : MonoBehaviour
 
     public float GetTotalCumulativeScore()
     {
+        PrintNumbers();
         return totalCumulativeScore;
     }
 
@@ -225,5 +234,13 @@ public class ScoreHandler : MonoBehaviour
             scoreBreakdownText.gameObject.SetActive(true);
             scoreBreakdownText.text = $"Total Earned: {totalCumulativeScore:N0} kr";
         }
+    }
+
+    public void PrintNumbers()
+    {
+        Debug.Log($"[ScoreHandler] Total Cumulative Earnings: {totalCumulativeScore:N2} kr");
+        Debug.Log($"[ScoreHandler] Fines: {fines:N2} kr");
+        Debug.Log($"[ScoreHandler] Wrong Burns: {wrongBurns}");
+        Debug.Log($"[ScoreHandler] Missed AI Paintings: {missedAIPaintings}");
     }
 }
