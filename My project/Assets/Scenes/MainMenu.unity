@@ -7013,10 +7013,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: All images used in the game are downloaded from pinterest, credit and thanks
-    goes to the original creators/posters. None of the team members can guanrantee
-    that pictures labled as "Non AI" isn't AI and vise versa, but we have done our
-    best to check credibility. No AI was generated for this project.
+  m_text: 'All images used in the game are downloaded from pinterest. Credit and
+    thanks goes to the original creators/posters. None of the team members can guanrantee
+    that pictures labled as "Non AI" aren''t AI and vise versa, but we have done
+    our best to check credibility. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e0a8d622bbbd067488756756de230027, type: 2}
   m_sharedMaterial: {fileID: 649058767239716302, guid: e0a8d622bbbd067488756756de230027, type: 2}
