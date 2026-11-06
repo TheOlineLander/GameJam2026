@@ -2,16 +2,16 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEditor.ShaderGraph.Internal;
+//using UnityEditor.ShaderGraph.Internal;
 using System.Collections;
-using UnityEngine.Assemblies;
+//using UnityEngine.Assemblies;
 
 public class Painting : MonoBehaviour
 {
     [SerializeField] private float dissolveSpeed, dissolveAmount;
     [SerializeField] private TMP_Text text;
     [SerializeField] private Material dissolve;
-    [SerializeField] private ShaderGraphVfxAsset shader;
+    //[SerializeField] private ShaderGraphVfxAsset shader;
     [SerializeField] private AudioSource audioSource; //HANNA
 
     [SerializeField] private GameObject burnEffect;
